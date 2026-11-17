@@ -73,20 +73,18 @@ function render(y){
   marker.bindPopup(`<b>${e.facility}</b><br>${e.location}<br>Closure proxy year: <b>${e.year}</b><br>Type: ${e.type}<br>Facility code: ${e.code}`);
   marker.addTo(layer);
  });
- const list=document.getElementById('yearList');list.innerHTML='<b class="small">Closures by year and facility type</b>';
- years.filter(v=>v<=y).slice().reverse().forEach(v=>{
-  const yearEvents=byYear[v];
-  const heading=document.createElement('div');heading.className='yearrow';heading.style.cssText='margin-top:5px;padding-top:5px;border-top:1px solid #e5eaee';
-  heading.innerHTML=`<b>${v}</b><b>${yearEvents.length} total</b>`;list.appendChild(heading);
-  const counts={};
-  yearEvents.forEach(e=>{counts[e.type]=(counts[e.type]||0)+1});
-  Object.keys(counts).sort((a,b)=>a.localeCompare(b)).forEach(type=>{
-   const d=document.createElement('div');d.className='yearrow';d.style.cssText='padding:2px 0 2px 12px;font-size:11px;color:#637381';
-   const style=typeStyles[type]||{color:"#555"};
-   d.innerHTML=`<span style="display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${style.color}"></span>${type}</span><b>${counts[type]}</b>`;
-   list.appendChild(d);
-  });
+ const list=document.getElementById('yearList');
+ list.innerHTML='<b class="small">Cumulative closures by facility type</b>';
+ const counts={};
+ visible.forEach(e=>{counts[e.type]=(counts[e.type]||0)+1});
+ Object.keys(typeStyles).filter(type=>counts[type]).sort((a,b)=>a.localeCompare(b)).forEach(type=>{
+  const d=document.createElement('div');d.className='yearrow';d.style.cssText='padding:5px 0;font-size:12px';
+  const style=typeStyles[type]||{color:"#555"};
+  d.innerHTML=`<span style="display:flex;align-items:center;gap:7px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${style.color}"></span>${type}</span><b>${counts[type]}</b>`;
+  list.appendChild(d);
  });
+ const total=document.createElement('div');total.className='yearrow';total.style.cssText='margin-top:7px;padding-top:8px;border-top:1px solid #dce3e8;font-weight:700';
+ total.innerHTML=`<span>Total closures</span><b>${visible.length}</b>`;list.appendChild(total);
 }
 function stop(){if(timer)clearInterval(timer);timer=null;document.getElementById('play').textContent='▶ Play'}
 document.getElementById('play').onclick=()=>{if(timer){stop();return}if(current>=2025)render(2004);document.getElementById('play').textContent='Ⅱ Pause';timer=setInterval(()=>{if(current>=2025){stop();return}render(current+1)},950)};
