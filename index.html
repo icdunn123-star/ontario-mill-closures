@@ -5,7 +5,7 @@
 <style>
 :root{--ink:#17212b;--muted:#637381;--panel:#fff;--accent:#b33a2b;--line:#dce3e8}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f3f6f8}
-header{padding:18px 22px 12px;background:#152b3c;color:white}h1{font-size:22px;margin:0 0 5px}header p{margin:0;color:#d6e0e7;font-size:13px}
+header{padding:18px 22px 12px;background:#152b3c;color:white}.association-title{font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#c7d6df;margin-bottom:7px}h1{font-size:22px;margin:0 0 5px}header p{margin:0;color:#d6e0e7;font-size:13px}
 main{max-width:1400px;margin:0 auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px}
 #map{height:calc(100vh - 215px);min-height:500px;border-radius:10px;border:1px solid #cbd5dc;z-index:1}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 2px 8px #1020300d}
@@ -18,7 +18,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;fon
 footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
 @media(max-width:900px){main{grid-template-columns:1fr}#map{height:60vh;min-height:430px}}
 </style></head><body>
-<header><h1>Forest Product Mill Closures in Ontario Since 2004</h1><p>Annual facility activity changes · 2004–2025 · Approximate town/city locations</p></header>
+<header><div class="association-title">Ontario Forest Industries Association</div><h1>Forest Product Mill Closures in Ontario Since 2004</h1><p>Annual facility activity changes · 2004–2025 · Approximate town/city locations</p></header>
 <main><section><div class="controls"><button id="play">▶ Play</button><button class="secondary" id="back">−1 year</button><button class="secondary" id="forward">+1 year</button><button class="secondary" id="reset">Reset</button><span class="small" id="status">Showing closures through 2004</span></div>
 <div id="map"></div></section>
 <aside class="panel"><div class="year" id="yearLabel">2004</div><div class="small">Closures shown cumulatively up to this year</div>
