@@ -36,17 +36,17 @@ const map=L.map('map',{preferCanvas:true}).setView([47.2,-83.2],5);
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri — Sources: Esri, USGS, NOAA'}).addTo(map);
 const layer=L.layerGroup().addTo(map);
 const typeStyles={
- "Sawmill":{symbol:"■",color:"#b33a2b"},
- "Composite":{symbol:"◆",color:"#2463a6"},
- "Pulp":{symbol:"▲",color:"#16845b"},
- "Paper":{symbol:"●",color:"#7b4ab5"},
- "Veneer":{symbol:"✚",color:"#c07816"},
- "Fuelwood":{symbol:"★",color:"#a33f78"},
- "Fulewood":{symbol:"★",color:"#a33f78"},
- "Bioproduct":{symbol:"⬟",color:"#008b9a"},
- "Biomass-Energy":{symbol:"⬢",color:"#617d26"},
- "Other":{symbol:"▼",color:"#59636e"},
- "Other Undefined":{symbol:"✦",color:"#9b681e"}
+ "Sawmill":{symbol:"🪵",color:"#b33a2b"},
+ "Composite":{symbol:"🧱",color:"#2463a6"},
+ "Pulp":{symbol:"📄",color:"#16845b"},
+ "Paper":{symbol:"📃",color:"#7b4ab5"},
+ "Veneer":{symbol:"📑",color:"#c07816"},
+ "Fuelwood":{symbol:"🔥",color:"#a33f78"},
+ "Fulewood":{symbol:"🔥",color:"#a33f78"},
+ "Bioproduct":{symbol:"🌿",color:"#008b9a"},
+ "Biomass-Energy":{symbol:"⚡",color:"#617d26"},
+ "Other":{symbol:"⚙️",color:"#59636e"},
+ "Other Undefined":{symbol:"❔",color:"#9b681e"}
 };
 const facilityTypes=[...new Set(events.map(e=>e.type))].sort((a,b)=>a.localeCompare(b));
 document.getElementById('typeLegend').innerHTML=facilityTypes.map(type=>{
