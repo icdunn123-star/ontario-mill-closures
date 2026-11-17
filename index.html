@@ -68,7 +68,7 @@ function render(y){
   const j=jitter(e.code),lat=e.lat+j[0],lon=e.lon+j[1];
   const age=y-e.year;
   const style=typeStyles[e.type]||{symbol:"●",color:"#555"};
-  const marker=L.marker([lat,lon],{icon:L.divIcon({className:"",html:`<span class="type-symbol" style="color:${style.color};font-size:${Math.min(23,17+Math.sqrt(age)*0.35)}px">${style.symbol}</span>`,iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-10]})});
+  const marker=L.marker([lat,lon],{icon:L.divIcon({className:"",html:`<span class="type-symbol" style="color:${style.color};font-size:${Math.min(26.45,19.55+Math.sqrt(age)*0.4025)}px">${style.symbol}</span>`,iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-10]})});
   marker.bindPopup(`<b>${e.facility}</b><br>${e.location}<br>Closure proxy year: <b>${e.year}</b><br>Type: ${e.type}<br>Facility code: ${e.code}`);
   marker.addTo(layer);
  });
