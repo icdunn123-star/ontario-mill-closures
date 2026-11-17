@@ -13,7 +13,7 @@ main{max-width:1400px;margin:0 auto;padding:14px;display:grid;grid-template-colu
 button{border:0;border-radius:7px;background:#173c55;color:white;padding:9px 14px;font-weight:600;cursor:pointer}button.secondary{background:#e7edf1;color:#243746}
 input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;font-weight:700;color:var(--accent);line-height:1.1}
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.kpi{background:#f1f5f7;border-radius:8px;padding:10px}.kpi b{display:block;font-size:23px}.kpi span{font-size:11px;color:var(--muted)}
-.small{font-size:12px;color:var(--muted);line-height:1.45}.legend-title{font-size:12px;font-weight:700;margin:14px 0 6px}.type-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;margin:7px 0 13px}.type-legend-item{display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.25}.type-symbol{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;flex:0 0 20px;font-size:17px;font-weight:900;text-shadow:0 0 2px white,0 0 3px white}
+.small{font-size:12px;color:var(--muted);line-height:1.45}.legend-title{font-size:12px;font-weight:700;margin:14px 0 6px}.type-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;margin:7px 0 13px}.type-legend-item{display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.25}.type-dot{display:inline-block;width:13px;height:13px;flex:0 0 13px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #53616b,0 1px 3px #17212b66;background:currentColor}
 #yearList{max-height:220px;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.yearrow{display:flex;justify-content:space-between;padding:4px 0;font-size:12px}
 footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
 @media(max-width:900px){main{grid-template-columns:1fr}#map{height:60vh;min-height:430px}}
@@ -37,22 +37,22 @@ const map=L.map('map',{preferCanvas:true}).setView([47.2,-83.2],5);
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri — Sources: Esri, USGS, NOAA'}).addTo(map);
 const layer=L.layerGroup().addTo(map);
 const typeStyles={
- "Sawmill":{symbol:"🪵",color:"#b33a2b"},
- "Composite":{symbol:"🧱",color:"#2463a6"},
- "Pulp":{symbol:"📄",color:"#16845b"},
- "Paper":{symbol:"📃",color:"#7b4ab5"},
- "Veneer":{symbol:"🪚",color:"#c07816"},
- "Fuelwood":{symbol:"🔥",color:"#a33f78"},
- "Fulewood":{symbol:"🔥",color:"#a33f78"},
- "Bioproduct":{symbol:"🌿",color:"#008b9a"},
- "Biomass-Energy":{symbol:"⚡",color:"#617d26"},
- "Other":{symbol:"⚙️",color:"#59636e"},
- "Other Undefined":{symbol:"❔",color:"#9b681e"}
+ "Sawmill":{color:"#b33a2b"},
+ "Composite":{color:"#2463a6"},
+ "Pulp":{color:"#16845b"},
+ "Paper":{color:"#7b4ab5"},
+ "Veneer":{color:"#c07816"},
+ "Fuelwood":{color:"#a33f78"},
+ "Fulewood":{color:"#a33f78"},
+ "Bioproduct":{color:"#008b9a"},
+ "Biomass-Energy":{color:"#617d26"},
+ "Other":{color:"#59636e"},
+ "Other Undefined":{color:"#9b681e"}
 };
 const facilityTypes=[...new Set(events.map(e=>e.type))].sort((a,b)=>a.localeCompare(b));
 document.getElementById('typeLegend').innerHTML=facilityTypes.map(type=>{
- const style=typeStyles[type]||{symbol:"●",color:"#555"};
- return `<div class="type-legend-item"><span class="type-symbol" style="color:${style.color}">${style.symbol}</span><span>${type}</span></div>`;
+ const style=typeStyles[type]||{color:"#555"};
+ return `<div class="type-legend-item"><span class="type-dot" style="color:${style.color}"></span><span>${type}</span></div>`;
 }).join('');
 const byYear=Object.fromEntries(years.map(y=>[y,events.filter(e=>e.year===y)]));
 let current=2004,timer=null;
@@ -68,8 +68,8 @@ function render(y){
  visible.forEach(e=>{
   const j=jitter(e.code),lat=e.lat+j[0],lon=e.lon+j[1];
   const age=y-e.year;
-  const style=typeStyles[e.type]||{symbol:"●",color:"#555"};
-  const marker=L.marker([lat,lon],{icon:L.divIcon({className:"",html:`<span class="type-symbol" style="color:${style.color};font-size:${Math.min(26.45,19.55+Math.sqrt(age)*0.4025)}px">${style.symbol}</span>`,iconSize:[24,24],iconAnchor:[12,12],popupAnchor:[0,-10]})});
+  const style=typeStyles[e.type]||{color:"#555"};
+  const marker=L.marker([lat,lon],{icon:L.divIcon({className:"",html:`<span class="type-dot" style="color:${style.color};width:14px;height:14px;display:block"></span>`,iconSize:[18,18],iconAnchor:[9,9],popupAnchor:[0,-10]})});
   marker.bindPopup(`<b>${e.facility}</b><br>${e.location}<br>Closure proxy year: <b>${e.year}</b><br>Type: ${e.type}<br>Facility code: ${e.code}`);
   marker.addTo(layer);
  });
