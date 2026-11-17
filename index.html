@@ -73,9 +73,19 @@ function render(y){
   marker.bindPopup(`<b>${e.facility}</b><br>${e.location}<br>Closure proxy year: <b>${e.year}</b><br>Type: ${e.type}<br>Facility code: ${e.code}`);
   marker.addTo(layer);
  });
- const list=document.getElementById('yearList');list.innerHTML='<b class="small">Closures by year</b>';
+ const list=document.getElementById('yearList');list.innerHTML='<b class="small">Closures by year and facility type</b>';
  years.filter(v=>v<=y).slice().reverse().forEach(v=>{
-  const d=document.createElement('div');d.className='yearrow';d.innerHTML=`<span>${v}</span><b>${byYear[v].length}</b>`;list.appendChild(d);
+  const yearEvents=byYear[v];
+  const heading=document.createElement('div');heading.className='yearrow';heading.style.cssText='margin-top:5px;padding-top:5px;border-top:1px solid #e5eaee';
+  heading.innerHTML=`<b>${v}</b><b>${yearEvents.length} total</b>`;list.appendChild(heading);
+  const counts={};
+  yearEvents.forEach(e=>{counts[e.type]=(counts[e.type]||0)+1});
+  Object.keys(counts).sort((a,b)=>a.localeCompare(b)).forEach(type=>{
+   const d=document.createElement('div');d.className='yearrow';d.style.cssText='padding:2px 0 2px 12px;font-size:11px;color:#637381';
+   const style=typeStyles[type]||{color:"#555"};
+   d.innerHTML=`<span style="display:flex;align-items:center;gap:6px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:${style.color}"></span>${type}</span><b>${counts[type]}</b>`;
+   list.appendChild(d);
+  });
  });
 }
 function stop(){if(timer)clearInterval(timer);timer=null;document.getElementById('play').textContent='▶ Play'}
