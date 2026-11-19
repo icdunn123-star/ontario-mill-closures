@@ -11,13 +11,23 @@ main{max-width:1400px;margin:0 auto;padding:14px;display:grid;grid-template-colu
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 2px 8px #1020300d}
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0}
 .timeline-bar{max-width:1372px;margin:12px auto 0;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 8px #1020300d}
-.timeline-controls{display:flex;align-items:center;gap:16px;flex-wrap:nowrap}
-.timeline-current{display:flex;align-items:center;gap:9px;min-width:130px}
-.timeline-current .year{font-size:30px}
-.timeline-bar .controls button{padding:8px 12px}
-.timeline-bar #status{margin-left:auto}
-.timeline-bar label{display:block;margin:8px 0 2px}
-.timeline-bar input[type=range]{display:block;width:100%;margin:4px 0 0}
+.timeline-controls{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.timeline-current{display:flex;align-items:center;gap:8px;min-width:0;margin-right:2px}
+.timeline-current .small{white-space:nowrap}
+.timeline-current .year{font-size:27px}
+.timeline-bar .controls{display:flex;align-items:center;gap:6px}
+.timeline-bar .controls button{padding:7px 10px;font-size:12px}
+.timeline-bar #status{margin-left:auto;white-space:nowrap;font-size:11px}
+.timeline-bar label{display:block;margin:5px 0 0}
+.timeline-bar input[type=range]{display:block;width:100%;margin:3px 0 0}
+.timeline-summary{display:flex;align-items:center;gap:7px;margin-left:auto}
+.timeline-summary .kpi{padding:6px 9px;min-width:92px}
+.timeline-summary .kpi b{font-size:18px}
+.timeline-summary .kpi span{font-size:10px}
+.timeline-summary .legend-title{margin:0 3px 0 8px;white-space:nowrap}
+.timeline-summary .type-legend{display:flex;gap:5px 9px;margin:0;flex-wrap:wrap}
+.timeline-summary .type-legend-item{font-size:10px;white-space:nowrap}
+.timeline-summary .small{max-width:210px;font-size:10px;line-height:1.3}
 button{border:0;border-radius:7px;background:#173c55;color:white;padding:9px 14px;font-weight:600;cursor:pointer}button.secondary{background:#e7edf1;color:#243746}
 input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;font-weight:700;color:var(--accent);line-height:1.1}
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.kpi{background:#f1f5f7;border-radius:8px;padding:10px}.kpi b{display:block;font-size:23px}.kpi span{font-size:11px;color:var(--muted)}
@@ -84,15 +94,13 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
 <header><div class="association-title">Ontario Forest Industries Association</div><h1>Forest Product Mill Closures in Ontario Since 2004</h1><p>Annual facility activity changes · 2004–2025 · Approximate town/city locations</p></header>
 <div class="timeline-bar">
  <div class="timeline-controls">
-  <div class="timeline-current"><span class="small">Selected year</span><strong class="year" id="yearLabel">2004</strong></div>
-<aside class="panel">
-<div class="small">Closures shown cumulatively up to the selected year</div>
-<div class="kpis"><div class="kpi"><b id="yearCount">0</b><span>closures in selected year</span></div><div class="kpi"><b id="totalCount">0</b><span>cumulative closures</span></div></div>
-<div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
-<div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
-<div id="yearList"></div></aside>
-
+  <div class="timeline-current"><span class="small">Year</span><strong class="year" id="yearLabel">2004</strong></div>
   <div class="controls"><button id="play">▶ Play</button><button class="secondary" id="back">−1 year</button><button class="secondary" id="forward">+1 year</button><button class="secondary" id="reset">Reset</button></div>
+  <div class="timeline-summary">
+   <div class="kpi"><b id="yearCount">0</b><span>closures this year</span></div>
+   <div class="kpi"><b id="totalCount">0</b><span>cumulative closures</span></div>
+   <span class="legend-title">Facility types</span><div id="typeLegend" class="type-legend"></div>
+  </div>
   <span class="small" id="status">Showing closures through 2004</span>
  </div>
  <label for="yearSlider" class="small">Shared timeline — map and harvest chart</label>
@@ -215,18 +223,7 @@ function render(y){
   marker.bindPopup(`<b>${e.facility}</b><br>${e.location}<br>Closure proxy year: <b>${e.year}</b><br>Type: ${e.type}<br>Facility code: ${e.code}`);
   marker.addTo(layer);
  });
- const list=document.getElementById('yearList');
- list.innerHTML='<b class="small">Cumulative closures by facility type</b>';
- const counts={};
- visible.forEach(e=>{counts[e.type]=(counts[e.type]||0)+1});
- Object.keys(typeStyles).filter(type=>counts[type]).sort((a,b)=>a.localeCompare(b)).forEach(type=>{
-  const d=document.createElement('div');d.className='yearrow';d.style.cssText='padding:5px 0;font-size:12px';
-  const style=typeStyles[type]||{color:"#555"};
-  d.innerHTML=`<span style="display:flex;align-items:center;gap:7px"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${style.color}"></span>${type}</span><b>${counts[type]}</b>`;
-  list.appendChild(d);
- });
- const total=document.createElement('div');total.className='yearrow';total.style.cssText='margin-top:7px;padding-top:8px;border-top:1px solid #dce3e8;font-weight:700';
- total.innerHTML=`<span>Total closures</span><b>${visible.length}</b>`;list.appendChild(total);
+
 }
 function stop(){if(timer)clearInterval(timer);timer=null;document.getElementById('play').textContent='▶ Play'}
 document.getElementById('play').onclick=()=>{if(timer){stop();return}if(current>=2025)render(2004);document.getElementById('play').textContent='Ⅱ Pause';timer=setInterval(()=>{if(current>=2025){stop();return}render(current+1)},950)};
