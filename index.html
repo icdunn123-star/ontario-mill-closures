@@ -25,6 +25,18 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
 .housing-kpi{background:#f1f5f7;border-radius:8px;padding:12px}
 .housing-kpi b{display:block;font-size:23px;margin-bottom:3px}
 .housing-kpi span{font-size:11px;color:var(--muted);line-height:1.35}
+
+.housing-live{margin:0 0 17px;padding:17px 18px;background:#142b3a;color:#fff;border-radius:9px}
+.housing-live-top{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:1.1px;color:#c8d8e2}
+.housing-live-dot{width:8px;height:8px;border-radius:50%;background:#52d6a2;box-shadow:0 0 0 4px #52d6a225;display:inline-block}
+#housingClockTime{margin-left:auto;font-weight:500;letter-spacing:0;color:#b9cbd6}
+.housing-live-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:17px}
+.housing-live-label{display:block;color:#c8d8e2;font-size:12px;line-height:1.4}
+.housing-live-main strong{display:block;font-size:clamp(34px,5vw,52px);line-height:1.15;letter-spacing:-1.5px;font-variant-numeric:tabular-nums;margin:5px 0}
+.housing-live-side strong{display:block;font-size:clamp(26px,4vw,38px);line-height:1.3;font-variant-numeric:tabular-nums;margin:5px 0}
+.housing-live-caption{font-size:11px;color:#a9bfcc}
+.housing-live-foot{border-top:1px solid #ffffff26;padding-top:11px;margin-top:15px;font-size:11px;line-height:1.5;color:#c8d8e2}
+
 .housing-chart-wrap{width:100%;overflow-x:auto}
 .housing-chart{display:block;width:100%;min-width:580px;height:auto}
 .housing-legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:5px 0 12px}
@@ -51,10 +63,18 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
   <h2 class="housing-heading" id="housingTitle">Ontario Housing Construction Progress</h2>
   <p class="housing-subtitle">Annual housing starts compared with the average annual pace implied by the province's goal of 1.5 million homes from 2022 to 2031.</p>
   <div class="housing-kpis">
-   <div class="housing-kpi"><b>325,326</b><span>Housing starts, 2022–2025</span></div>
+   <div class="housing-kpi"><b>325,326</b><span>Housing starts, 2022–2025 (last complete annual data)</span></div>
    <div class="housing-kpi"><b>1,174,674</b><span>Remaining to reach 1.5 million, using housing starts as the progress proxy</span></div>
    <div class="housing-kpi"><b>274,674</b><span>Behind the straight-line pace at the end of 2025 (600,000 benchmark less actual starts)</span></div>
    <div class="housing-kpi"><b>195,779</b><span>Average starts needed each year from 2026–2031 to reach 1.5 million</span></div>
+  </div>
+  <div class="housing-live" aria-live="off">
+   <div class="housing-live-top"><span class="housing-live-dot"></span><span>LIVE PACE CLOCK</span><span id="housingClockTime"></span></div>
+   <div class="housing-live-grid">
+    <div class="housing-live-main"><span class="housing-live-label">Homes that should have started by today in 2026</span><strong id="housingDue">—</strong><span class="housing-live-caption">2026 pace benchmark, prorated by the calendar</span></div>
+    <div class="housing-live-side"><span class="housing-live-label">Required pace from today</span><strong id="housingDaily">—</strong><span class="housing-live-caption">homes per day to Dec. 31, 2031</span></div>
+   </div>
+   <div class="housing-live-foot">This clock advances the straight-line schedule in real time. It does not represent verified 2026 construction or automatically reduce the remaining-home tally; that figure changes only when new official construction data are entered.</div>
   </div>
   <div class="housing-legend">
    <span><i class="housing-swatch"></i> Actual housing starts</span>
@@ -155,4 +175,31 @@ document.getElementById('forward').onclick=()=>{stop();render(Math.min(2025,curr
 document.getElementById('reset').onclick=()=>{stop();render(2004)};
 slider.oninput=()=>{stop();render(+slider.value)};
 render(2004);
+
+// Live straight-line pace clock for the remaining 1,174,674 starts.
+// Uses the last complete annual total (through 2025) as the baseline;
+// it is a schedule benchmark, not a feed of actual 2026 construction.
+(function(){
+ const baseline=1174674;
+ const start=Date.UTC(2026,0,1,0,0,0);
+ const deadline=Date.UTC(2032,0,1,0,0,0);
+ const annual=baseline/6;
+ const due=document.getElementById('housingDue');
+ const daily=document.getElementById('housingDaily');
+ const clock=document.getElementById('housingClockTime');
+ const fmt=n=>Math.round(n).toLocaleString('en-CA');
+ function tick(){
+  const now=new Date();
+  const t=now.getTime();
+  const elapsed=Math.max(0,Math.min(deadline-start,t-start));
+  const remaining=Math.max(0,deadline-t);
+  const scheduled=Math.min(baseline,annual*(elapsed/(365.2425*24*60*60*1000)));
+  const daysLeft=remaining/(24*60*60*1000);
+  due.textContent=fmt(scheduled);
+  daily.textContent=daysLeft>0?fmt(baseline/daysLeft):'0';
+  clock.textContent=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Toronto',dateStyle:'medium',timeStyle:'medium'}).format(now)+' ET';
+ }
+ tick();
+ setInterval(tick,1000);
+})();
 </script></body></html>
