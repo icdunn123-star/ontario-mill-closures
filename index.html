@@ -6,8 +6,8 @@
 :root{--ink:#17212b;--muted:#637381;--panel:#fff;--accent:#b33a2b;--line:#dce3e8}
 *{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f3f6f8}
 header{padding:18px 22px 12px;background:#152b3c;color:white}.association-title{font-size:13px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#c7d6df;margin-bottom:7px}h1{font-size:22px;margin:0 0 5px}header p{margin:0;color:#d6e0e7;font-size:13px}
-main{max-width:1400px;margin:0 auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:14px}
-#map{height:calc(100vh - 215px);min-height:500px;border-radius:10px;border:1px solid #cbd5dc;z-index:1}
+main{max-width:1400px;margin:0 auto;padding:14px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+#map{height:calc(100vh - 280px);min-height:450px;border-radius:10px;border:1px solid #cbd5dc;z-index:1}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 2px 8px #1020300d}
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 button{border:0;border-radius:7px;background:#173c55;color:white;padding:9px 14px;font-weight:600;cursor:pointer}button.secondary{background:#e7edf1;color:#243746}
@@ -15,7 +15,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;fon
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.kpi{background:#f1f5f7;border-radius:8px;padding:10px}.kpi b{display:block;font-size:23px}.kpi span{font-size:11px;color:var(--muted)}
 .small{font-size:12px;color:var(--muted);line-height:1.45}.legend-title{font-size:12px;font-weight:700;margin:14px 0 6px}.type-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;margin:7px 0 13px}.type-legend-item{display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.25}.type-dot{display:inline-block;width:13px;height:13px;flex:0 0 13px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #53616b,0 1px 3px #17212b66;background:currentColor}
 #yearList{max-height:220px;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.yearrow{display:flex;justify-content:space-between;padding:4px 0;font-size:12px}
-footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
+aside.panel{grid-column:1 / -1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:22px;align-items:start}aside.panel > .year,aside.panel > .small,aside.panel > .kpis,aside.panel > label,aside.panel > input{grid-column:1}aside.panel > .legend-title,aside.panel > .type-legend,aside.panel > #yearList{grid-column:2}aside.panel > .small:last-of-type{grid-column:1}footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
 
 .housing-section{max-width:1400px;margin:0 auto 18px;padding:0 14px}
 .housing-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d}
@@ -47,18 +47,18 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
 .housing-notes a{color:#245b7b}
 @media(max-width:650px){.housing-kpis{grid-template-columns:1fr}.housing-card{padding:13px}}
 
-@media(max-width:900px){main{grid-template-columns:1fr}#map{height:60vh;min-height:430px}}
+@media(max-width:900px){main{grid-template-columns:1fr}aside.panel{grid-template-columns:1fr}aside.panel > *{grid-column:1 !important}#map{height:60vh;min-height:430px}.harvest-card{min-height:0}.harvest-section{margin:0}}
 
 /* Crown forest harvest timeline chart */
-.harvest-section{max-width:1400px;margin:0 auto 18px;padding:0 14px}
-.harvest-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d}
+.harvest-section{max-width:none;margin:0;padding:0;min-width:0}
+.harvest-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d;height:100%;min-height:450px}
 .harvest-title{font-size:20px;margin:0 0 5px;color:var(--ink)}
 .harvest-subtitle{font-size:13px;color:var(--muted);margin:0 0 12px;line-height:1.5}
 .harvest-stats{display:flex;gap:22px;flex-wrap:wrap;margin:0 0 10px}
 .harvest-stat strong{display:block;font-size:25px;color:#315f47;font-variant-numeric:tabular-nums}
 .harvest-stat span{font-size:11px;color:var(--muted)}
 .harvest-chart-wrap{overflow-x:auto;width:100%}
-.harvest-chart{width:100%;min-width:580px;height:330px;display:block;overflow:visible}
+.harvest-chart{width:100%;min-width:0;height:330px;display:block;overflow:visible}
 .harvest-status{font-size:11px;color:#687783;margin-top:8px;line-height:1.5}
 .harvest-status a{color:#245b7b}
 .harvest-loading{font-size:13px;color:#687783;padding:20px 0}
@@ -66,12 +66,6 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
 <header><div class="association-title">Ontario Forest Industries Association</div><h1>Forest Product Mill Closures in Ontario Since 2004</h1><p>Annual facility activity changes · 2004–2025 · Approximate town/city locations</p></header>
 <main><section><div class="controls"><button id="play">▶ Play</button><button class="secondary" id="back">−1 year</button><button class="secondary" id="forward">+1 year</button><button class="secondary" id="reset">Reset</button><span class="small" id="status">Showing closures through 2004</span></div>
 <div id="map"></div></section>
-<aside class="panel"><div class="year" id="yearLabel">2004</div><div class="small">Closures shown cumulatively up to this year</div>
-<div class="kpis"><div class="kpi"><b id="yearCount">0</b><span>closures in selected year</span></div><div class="kpi"><b id="totalCount">0</b><span>cumulative closures</span></div></div>
-<label for="yearSlider" class="small">Shared timeline — map and harvest chart</label><input id="yearSlider" type="range" min="2004" max="2025" step="1" value="2004">
-<div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
-<div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
-<div id="yearList"></div></aside></main>
 <section class="harvest-section" aria-labelledby="harvestTitle">
  <div class="harvest-card">
   <h2 class="harvest-title" id="harvestTitle">Ontario Crown Forest Harvest Volume</h2>
@@ -85,6 +79,13 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
   <div id="harvestStatus" class="harvest-status">Source: Ontario Data Catalogue, Harvest Volume dataset. Volumes are summed across management units, species groups and product types and shown in million cubic metres. Crown-managed forests only; excludes private land and provincial parks.</div>
  </div>
 </section>
+<aside class="panel"><div class="year" id="yearLabel">2004</div><div class="small">Closures shown cumulatively up to this year</div>
+<div class="kpis"><div class="kpi"><b id="yearCount">0</b><span>closures in selected year</span></div><div class="kpi"><b id="totalCount">0</b><span>cumulative closures</span></div></div>
+<label for="yearSlider" class="small">Shared timeline — map and harvest chart</label><input id="yearSlider" type="range" min="2004" max="2025" step="1" value="2004">
+<div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
+<div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
+<div id="yearList"></div></aside></main>
+
 
 <section class="housing-section" aria-labelledby="housingTitle">
  <div class="housing-card">
