@@ -23,7 +23,7 @@ input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;fon
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.kpi{background:#f1f5f7;border-radius:8px;padding:10px}.kpi b{display:block;font-size:23px}.kpi span{font-size:11px;color:var(--muted)}
 .small{font-size:12px;color:var(--muted);line-height:1.45}.legend-title{font-size:12px;font-weight:700;margin:14px 0 6px}.type-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;margin:7px 0 13px}.type-legend-item{display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.25}.type-dot{display:inline-block;width:13px;height:13px;flex:0 0 13px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #53616b,0 1px 3px #17212b66;background:currentColor}
 #yearList{max-height:220px;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.yearrow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:14px;padding:4px 0;font-size:12px;font-variant-numeric:tabular-nums}.yearrow > span{min-width:0}.yearrow > b{min-width:2.5ch;text-align:right;font-variant-numeric:tabular-nums}
-aside.panel{grid-column:1 / -1;display:grid;grid-template-columns:minmax(250px,1.1fr) minmax(320px,1.6fr) minmax(290px,1.4fr);gap:10px 22px;align-items:start;padding:12px 16px}
+aside.panel{max-width:1372px;margin:10px auto 0;display:grid;grid-template-columns:minmax(250px,1.1fr) minmax(320px,1.6fr) minmax(290px,1.4fr);gap:10px 22px;align-items:start;padding:12px 16px}
 aside.panel > .small:first-of-type{grid-column:1;grid-row:1}
 aside.panel > .kpis{grid-column:1;grid-row:2;margin:5px 0}
 aside.panel > .legend-title{grid-column:2;grid-row:1;margin:0}
@@ -65,7 +65,7 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
 .housing-notes a{color:#245b7b}
 @media(max-width:650px){.housing-kpis{grid-template-columns:1fr}.housing-card{padding:13px}}
 
-@media(max-width:900px){main{grid-template-columns:1fr}.timeline-bar{margin:10px 14px}.timeline-controls{flex-wrap:wrap}aside.panel{grid-template-columns:1fr 1fr;gap:9px}aside.panel > *{grid-column:auto !important;grid-row:auto !important}aside.panel > .small:last-of-type,aside.panel > #yearList{grid-column:1 / -1 !important}aside.panel > #yearList{display:block}#map{height:60vh;min-height:430px}.harvest-card{min-height:0}.harvest-section{margin:0}}
+@media(max-width:900px){main{grid-template-columns:1fr}.timeline-bar{margin:10px 14px}.timeline-controls{flex-wrap:wrap}aside.panel{grid-template-columns:1fr 1fr;gap:9px;margin:10px 14px 0}aside.panel > *{grid-column:auto !important;grid-row:auto !important}aside.panel > .small:last-of-type,aside.panel > #yearList{grid-column:1 / -1 !important}aside.panel > #yearList{display:block}#map{height:60vh;min-height:430px}.harvest-card{min-height:0}.harvest-section{margin:0}}
 
 /* Crown forest harvest timeline chart */
 .harvest-section{max-width:none;margin:0;padding:0;min-width:0}
@@ -85,6 +85,13 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
 <div class="timeline-bar">
  <div class="timeline-controls">
   <div class="timeline-current"><span class="small">Selected year</span><strong class="year" id="yearLabel">2004</strong></div>
+<aside class="panel">
+<div class="small">Closures shown cumulatively up to the selected year</div>
+<div class="kpis"><div class="kpi"><b id="yearCount">0</b><span>closures in selected year</span></div><div class="kpi"><b id="totalCount">0</b><span>cumulative closures</span></div></div>
+<div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
+<div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
+<div id="yearList"></div></aside>
+
   <div class="controls"><button id="play">▶ Play</button><button class="secondary" id="back">−1 year</button><button class="secondary" id="forward">+1 year</button><button class="secondary" id="reset">Reset</button></div>
   <span class="small" id="status">Showing closures through 2004</span>
  </div>
@@ -106,12 +113,7 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
   <div id="harvestStatus" class="harvest-status">Source: Ontario Data Catalogue, Harvest Volume dataset. Volumes are summed across management units, species groups and product types and shown in million cubic metres. Crown-managed forests only; excludes private land and provincial parks.</div>
  </div>
 </section>
-<aside class="panel">
-<div class="small">Closures shown cumulatively up to the selected year</div>
-<div class="kpis"><div class="kpi"><b id="yearCount">0</b><span>closures in selected year</span></div><div class="kpi"><b id="totalCount">0</b><span>cumulative closures</span></div></div>
-<div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
-<div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
-<div id="yearList"></div></aside></main>
+</main>
 
 
 <section class="housing-section" aria-labelledby="housingTitle">
