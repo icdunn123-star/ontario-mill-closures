@@ -14,8 +14,8 @@ button{border:0;border-radius:7px;background:#173c55;color:white;padding:9px 14p
 input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;font-weight:700;color:var(--accent);line-height:1.1}
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.kpi{background:#f1f5f7;border-radius:8px;padding:10px}.kpi b{display:block;font-size:23px}.kpi span{font-size:11px;color:var(--muted)}
 .small{font-size:12px;color:var(--muted);line-height:1.45}.legend-title{font-size:12px;font-weight:700;margin:14px 0 6px}.type-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;margin:7px 0 13px}.type-legend-item{display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.25}.type-dot{display:inline-block;width:13px;height:13px;flex:0 0 13px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #53616b,0 1px 3px #17212b66;background:currentColor}
-#yearList{max-height:220px;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.yearrow{display:flex;justify-content:space-between;padding:4px 0;font-size:12px}
-aside.panel{grid-column:1 / -1;display:grid;grid-template-columns:minmax(190px,.9fr) minmax(210px,1fr) minmax(260px,1.35fr) minmax(230px,1.2fr);column-gap:18px;row-gap:5px;align-items:center;padding:12px 14px}aside.panel > .controls{grid-column:1;grid-row:1 / span 3;display:flex;flex-wrap:wrap;gap:6px;margin:0;align-content:center}aside.panel > .controls button{padding:7px 10px;font-size:12px}aside.panel > #status{flex-basis:100%;font-size:10px}aside.panel > #yearLabel{grid-column:2;grid-row:1;font-size:29px}aside.panel > #yearLabel + .small{grid-column:2;grid-row:2}aside.panel > .kpis{grid-column:2;grid-row:3;margin:3px 0 0;gap:6px}aside.panel > .kpis .kpi{padding:6px 8px}aside.panel > .kpis .kpi b{font-size:19px}aside.panel > label{grid-column:3;grid-row:1}aside.panel > #yearSlider{grid-column:3;grid-row:2;width:100%}aside.panel > .legend-title{grid-column:4;grid-row:1;margin:0}aside.panel > #typeLegend{grid-column:4;grid-row:2 / span 2;grid-template-columns:1fr 1fr;gap:5px 9px;margin:2px 0}aside.panel > .small:last-of-type{grid-column:3;grid-row:3;font-size:10px}aside.panel > #yearList{grid-column:1 / -1;grid-row:4;display:flex;flex-wrap:wrap;align-items:center;gap:5px 16px;max-height:none;overflow:visible;margin:5px 0 0;padding:7px 0 0}aside.panel > #yearList > b{flex-basis:100%}aside.panel > #yearList .yearrow{padding:2px 0 !important;margin:0 !important;font-size:11px !important}footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
+#yearList{max-height:220px;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.yearrow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:14px;padding:4px 0;font-size:12px;font-variant-numeric:tabular-nums}.yearrow > span{min-width:0}.yearrow > b{min-width:2.5ch;text-align:right;font-variant-numeric:tabular-nums}
+aside.panel{grid-column:1 / -1;display:grid;grid-template-columns:minmax(190px,.9fr) minmax(210px,1fr) minmax(260px,1.35fr) minmax(230px,1.2fr);column-gap:18px;row-gap:5px;align-items:center;padding:12px 14px}aside.panel > .controls{grid-column:1;grid-row:1 / span 3;display:flex;flex-wrap:wrap;gap:6px;margin:0;align-content:center}aside.panel > .controls button{padding:7px 10px;font-size:12px}aside.panel > #status{flex-basis:100%;font-size:10px}aside.panel > #yearLabel{grid-column:2;grid-row:1;font-size:29px}aside.panel > #yearLabel + .small{grid-column:2;grid-row:2}aside.panel > .kpis{grid-column:2;grid-row:3;margin:3px 0 0;gap:6px}aside.panel > .kpis .kpi{padding:6px 8px}aside.panel > .kpis .kpi b{font-size:19px}aside.panel > label{grid-column:3;grid-row:1}aside.panel > #yearSlider{grid-column:3;grid-row:2;width:100%}aside.panel > .legend-title{grid-column:4;grid-row:1;margin:0}aside.panel > #typeLegend{grid-column:4;grid-row:2 / span 2;grid-template-columns:1fr 1fr;gap:5px 9px;margin:2px 0}aside.panel > .small:last-of-type{grid-column:3;grid-row:3;font-size:10px}aside.panel > #yearList{grid-column:1 / -1;grid-row:4;display:flex;flex-wrap:wrap;align-items:center;gap:5px 16px;max-height:none;overflow:visible;margin:5px 0 0;padding:7px 0 0}aside.panel > #yearList > b{flex-basis:100%}aside.panel > #yearList .yearrow{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:center;min-width:142px;padding:4px 2px !important;margin:0 !important;font-size:12px !important}aside.panel > #yearList .yearrow > b{min-width:3ch;text-align:right}aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-top:1px solid var(--line);padding-left:12px !important;font-weight:700}footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
 
 .housing-section{max-width:1400px;margin:0 auto 18px;padding:0 14px}
 .housing-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d}
@@ -58,7 +58,7 @@ aside.panel{grid-column:1 / -1;display:grid;grid-template-columns:minmax(190px,.
 .harvest-stat strong{display:block;font-size:25px;color:#315f47;font-variant-numeric:tabular-nums}
 .harvest-stat span{font-size:11px;color:var(--muted)}
 .harvest-chart-wrap{overflow-x:auto;width:100%}
-.harvest-chart{width:100%;min-width:0;height:330px;display:block;overflow:visible}
+.harvest-chart{width:100%;min-width:0;height:430px;display:block;overflow:visible}
 .harvest-status{font-size:11px;color:#687783;margin-top:8px;line-height:1.5}
 .harvest-status a{color:#245b7b}
 .harvest-loading{font-size:13px;color:#687783;padding:20px 0}
@@ -114,7 +114,7 @@ aside.panel{grid-column:1 / -1;display:grid;grid-template-columns:minmax(190px,.
    <svg class="housing-chart" viewBox="0 0 960 340" role="img" aria-labelledby="housingChartTitle housingChartDesc">
     <title id="housingChartTitle">Ontario annual housing starts, 2022 to 2025</title>
     <desc id="housingChartDesc">Bars show annual housing starts of 96,080 in 2022, 89,297 in 2023, 74,573 in 2024 and 65,376 in 2025. A dashed line marks 150,000 starts per year, the straight-line pace implied by the province's 1.5 million homes goal.</desc>
-    <g font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#637381">
+    <g font-family="Arial,Helvetica,sans-serif" font-size="16" fill="#637381">
      <line x1="92" y1="260" x2="900" y2="260" stroke="#dce3e8"/><text x="78" y="264" text-anchor="end">0</text>
      <line x1="92" y1="194.4" x2="900" y2="194.4" stroke="#e8edf0"/><text x="78" y="198.4" text-anchor="end">50,000</text>
      <line x1="92" y1="128.8" x2="900" y2="128.8" stroke="#e8edf0"/><text x="78" y="132.8" text-anchor="end">100,000</text>
@@ -244,14 +244,14 @@ function updateHarvestChart(year){
   const chartYears=Object.keys(harvestByYear).map(Number).filter(y=>y>=2004&&y<=2025).sort((a,b)=>a-b);
   if(!chartYears.length)return;
   const vals=chartYears.map(y=>harvestByYear[y]/1e6),max=Math.ceil(Math.max(...vals)/2)*2;
-  const W=960,H=330,L=82,R=28,T=28,B=52,pw=W-L-R,ph=H-T-B;
+  const W=1000,H=440,L=96,R=32,T=36,B=64,pw=W-L-R,ph=H-T-B;
   const x=i=>L+i*pw/Math.max(1,chartYears.length-1),y=v=>T+ph-v/max*ph;
   let out='';
-  for(let t=0;t<=max;t+=2)out+='<line x1="'+L+'" y1="'+y(t)+'" x2="'+(W-R)+'" y2="'+y(t)+'" stroke="#e5ebee"/><text x="'+(L-12)+'" y="'+(y(t)+4)+'" text-anchor="end" fill="#687783" font-size="12">'+t+'</text>';
-  out+='<text x="'+L+'" y="15" fill="#687783" font-size="12">Harvest volume (million m³)</text>';
+  for(let t=0;t<=max;t+=2)out+='<line x1="'+L+'" y1="'+y(t)+'" x2="'+(W-R)+'" y2="'+y(t)+'" stroke="#e5ebee"/><text x="'+(L-12)+'" y="'+(y(t)+4)+'" text-anchor="end" fill="#687783" font-size="16">'+t+'</text>';
+  out+='<text x="'+L+'" y="15" fill="#687783" font-size="16">Harvest volume (million m³)</text>';
   const pts=chartYears.map((yr,i)=>x(i)+','+y(vals[i])).join(' ');
   out+='<polyline points="'+pts+'" fill="none" stroke="#477b59" stroke-width="3"/>';
-  chartYears.forEach((yr,i)=>{out+='<circle cx="'+x(i)+'" cy="'+y(vals[i])+'" r="3.5" fill="#477b59"/>';if(i%2===0||yr===2025)out+='<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="12">'+yr+'</text>';});
+  chartYears.forEach((yr,i)=>{out+='<circle cx="'+x(i)+'" cy="'+y(vals[i])+'" r="4.5" fill="#477b59"/>';if(i%2===0||yr===2025)out+='<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="16">'+yr+'</text>';});
   const idx=chartYears.indexOf(Number(year)),v=harvestByYear[year];
   if(idx>=0&&Number.isFinite(v))out+='<line x1="'+x(idx)+'" y1="'+T+'" x2="'+x(idx)+'" y2="'+(T+ph)+'" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/><circle cx="'+x(idx)+'" cy="'+y(v/1e6)+'" r="7" fill="#b33a2b" stroke="#fff" stroke-width="2"/>';
   svg.innerHTML=out;
