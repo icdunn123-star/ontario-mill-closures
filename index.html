@@ -48,6 +48,20 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
 @media(max-width:650px){.housing-kpis{grid-template-columns:1fr}.housing-card{padding:13px}}
 
 @media(max-width:900px){main{grid-template-columns:1fr}#map{height:60vh;min-height:430px}}
+
+/* Crown forest harvest timeline chart */
+.harvest-section{max-width:1400px;margin:0 auto 18px;padding:0 14px}
+.harvest-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d}
+.harvest-title{font-size:20px;margin:0 0 5px;color:var(--ink)}
+.harvest-subtitle{font-size:13px;color:var(--muted);margin:0 0 12px;line-height:1.5}
+.harvest-stats{display:flex;gap:22px;flex-wrap:wrap;margin:0 0 10px}
+.harvest-stat strong{display:block;font-size:25px;color:#315f47;font-variant-numeric:tabular-nums}
+.harvest-stat span{font-size:11px;color:var(--muted)}
+.harvest-chart-wrap{overflow-x:auto;width:100%}
+.harvest-chart{width:100%;min-width:580px;height:auto;display:block}
+.harvest-status{font-size:11px;color:#687783;margin-top:8px;line-height:1.5}
+.harvest-status a{color:#245b7b}
+.harvest-loading{font-size:13px;color:#687783;padding:20px 0}
 </style></head><body>
 <header><div class="association-title">Ontario Forest Industries Association</div><h1>Forest Product Mill Closures in Ontario Since 2004</h1><p>Annual facility activity changes · 2004–2025 · Approximate town/city locations</p></header>
 <main><section><div class="controls"><button id="play">▶ Play</button><button class="secondary" id="back">−1 year</button><button class="secondary" id="forward">+1 year</button><button class="secondary" id="reset">Reset</button><span class="small" id="status">Showing closures through 2004</span></div>
@@ -58,6 +72,20 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
 <div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
 <div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
 <div id="yearList"></div></aside></main>
+<section class="harvest-section" aria-labelledby="harvestTitle">
+ <div class="harvest-card">
+  <h2 class="harvest-title" id="harvestTitle">Ontario Crown Forest Harvest Volume</h2>
+  <p class="harvest-subtitle">Annual volume harvested from Ontario's managed Crown forests, aligned to the year selected on the mill-closures timeline.</p>
+  <div class="harvest-stats">
+   <div class="harvest-stat"><strong id="harvestSelectedValue">Loading…</strong><span id="harvestSelectedLabel">Selected year harvest volume</span></div>
+   <div class="harvest-stat"><strong id="harvestChangeValue">—</strong><span>Change from 2004</span></div>
+  </div>
+  <div id="harvestLoading" class="harvest-loading">Loading official Ontario harvest-volume data…</div>
+  <div class="harvest-chart-wrap"><svg id="harvestChart" class="harvest-chart" viewBox="0 0 960 330" role="img" aria-label="Annual Ontario Crown forest harvest volume from 2004 to 2025"></svg></div>
+  <div id="harvestStatus" class="harvest-status">Source: Ontario Data Catalogue, Harvest Volume dataset. Volumes are summed across management units, species groups and product types and shown in million cubic metres. Crown-managed forests only; excludes private land and provincial parks.</div>
+ </div>
+</section>
+
 <section class="housing-section" aria-labelledby="housingTitle">
  <div class="housing-card">
   <h2 class="housing-heading" id="housingTitle">Ontario Housing Construction Progress</h2>
@@ -142,6 +170,7 @@ const slider=document.getElementById('yearSlider');
 function jitter(code){let n=parseInt(code)||1;return [((n*17)%11-5)*0.0018,((n*31)%13-6)*0.0018]}
 function render(y){
  current=y;slider.value=y;document.getElementById('yearLabel').textContent=y;
+ updateHarvestChart(y);
  document.getElementById('yearCount').textContent=byYear[y].length;
  const visible=events.filter(e=>e.year<=y);
  document.getElementById('totalCount').textContent=visible.length;
@@ -203,4 +232,75 @@ render(2004);
  tick();
  setInterval(tick,1000);
 })();
+
+// Official Ontario Crown forest harvest-volume series. The source CSV is
+// aggregated by calendar year across management units, species and products.
+let harvestByYear={};
+let harvestReady=false;
+function parseHarvestCSV(text){
+ const rows=[];let row=[],field='',quoted=false;
+ for(let i=0;i<text.length;i++){
+  const ch=text[i],next=text[i+1];
+  if(ch==='"'&&quoted&&next==='"'){field+='"';i++}
+  else if(ch==='"'){quoted=!quoted}
+  else if(ch===','&&!quoted){row.push(field);field=''}
+  else if((ch==='\n'||ch==='\r')&&!quoted){if(field.length||row.length){row.push(field);rows.push(row)}field='';row=[];if(ch==='\r'&&next==='\n')i++}
+  else field+=ch;
+ }
+ if(field.length||row.length){row.push(field);rows.push(row)}
+ return rows;
+}
+function updateHarvestChart(year){
+ const svg=document.getElementById('harvestChart');
+ if(!svg||!harvestReady)return;
+ const years=Object.keys(harvestByYear).map(Number).filter(y=>y>=2004&&y<=2025).sort((a,b)=>a-b);
+ if(!years.length)return;
+ const vals=years.map(y=>harvestByYear[y]/1e6),max=Math.ceil(Math.max(...vals)/2)*2;
+ const W=960,H=330,L=82,R=28,T=28,B=52,plotW=W-L-R,plotH=H-T-B;
+ const x=i=>L+i*plotW/Math.max(1,years.length-1);
+ const y=v=>T+plotH-(v/max)*plotH;
+ let out='';
+ for(let tick=0;tick<=max;tick+=2){
+  out+=`<line x1="${L}" y1="${y(tick)}" x2="${W-R}" y2="${y(tick)}" stroke="#e5ebee"/><text x="${L-12}" y="${y(tick)+4}" text-anchor="end" fill="#687783" font-size="12">${tick}</text>`;
+ }
+ const points=years.map((yr,i)=>`${x(i)},${y(vals[i])}`).join(' ');
+ out+=`<text x="${L}" y="15" fill="#687783" font-size="12">Harvest volume (million m³)</text><polyline points="${points}" fill="none" stroke="#477b59" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+ years.forEach((yr,i)=>{
+  if(i%2===0||yr===2025)out+=`<text x="${x(i)}" y="${H-22}" text-anchor="middle" fill="#687783" font-size="12">${yr}</text>`;
+  out+=`<circle cx="${x(i)}" cy="${y(vals[i])}" r="3.5" fill="#477b59"/>`;
+ });
+ const idx=years.indexOf(Number(year));
+ if(idx>=0){
+  out+=`<line x1="${x(idx)}" y1="${T}" x2="${x(idx)}" y2="${T+plotH}" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/><circle cx="${x(idx)}" cy="${y(vals[idx])}" r="7" fill="#b33a2b" stroke="#fff" stroke-width="2"/><text x="${Math.min(W-R-4,Math.max(L+4,x(idx)))}" y="${Math.max(T+14,y(vals[idx])-14)}" text-anchor="${idx>years.length-4?'end':'start'}" fill="#b33a2b" font-size="13" font-weight="700">${year}: ${vals[idx].toFixed(2)}M m³</text>`;
+ }
+ svg.innerHTML=out;
+ const value=harvestByYear[year];
+ const first=harvestByYear[2004];
+ document.getElementById('harvestSelectedValue').textContent=value==null?'No data':(value/1e6).toFixed(2)+'M m³';
+ document.getElementById('harvestSelectedLabel').textContent='Crown harvest volume in '+year;
+ document.getElementById('harvestChangeValue').textContent=value==null||!first?'—':((value/first-1)*100>=0?'+':'')+((value/first-1)*100).toFixed(1)+'%';
+}
+(async function loadHarvestData(){
+ const status=document.getElementById('harvestLoading');
+ try{
+  const url='https://data.ontario.ca/dataset/6889a142-7a14-4998-9095-5332bac40703/resource/89b157e4-7fb0-4416-8dab-b5ea73693421/download/harvest_volume.csv';
+  const response=await fetch(url,{cache:'no-cache'});
+  if(!response.ok)throw new Error('Ontario data download returned '+response.status);
+  const rows=parseHarvestCSV(await response.text());
+  const headers=rows.shift().map(v=>v.trim().toLowerCase());
+  const yi=headers.indexOf('year'),vi=headers.indexOf('volume');
+  if(yi<0||vi<0)throw new Error('Unexpected CSV column headings');
+  rows.forEach(row=>{
+   const yr=Number(row[yi]),vol=Number(String(row[vi]).replace(/,/g,''));
+   if(yr>=2004&&yr<=2025&&Number.isFinite(vol))harvestByYear[yr]=(harvestByYear[yr]||0)+vol;
+  });
+  harvestReady=true;
+  status.style.display='none';
+  updateHarvestChart(current);
+ }catch(err){
+  status.textContent='The official harvest dataset could not be loaded in this browser. Please check the Ontario Data Catalogue source link below. ('+err.message+')';
+  status.innerHTML+=' <a href="https://data.ontario.ca/en/dataset/report-on-forest-management-annual-summary-of-ontario-s-forest-management-activities/resource/89b157e4-7fb0-4416-8dab-b5ea73693421" target="_blank" rel="noopener">Open dataset</a>';
+ }
+})();
+
 </script></body></html>
