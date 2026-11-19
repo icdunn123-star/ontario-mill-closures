@@ -234,88 +234,66 @@ render(2004);
  setInterval(tick,1000);
 })();
 
-// Official Ontario Crown forest harvest-volume series. The source CSV is
-// aggregated by calendar year across management units, species and products.
-function parseHarvestCSV(text){
- const rows=[];let row=[],field='',quoted=false;
- for(let i=0;i<text.length;i++){
-  const ch=text[i],next=text[i+1];
-  if(ch==='"'&&quoted&&next==='"'){field+='"';i++}
-  else if(ch==='"'){quoted=!quoted}
-  else if(ch===','&&!quoted){row.push(field);field=''}
-  else if((ch==='\n'||ch==='\r')&&!quoted){if(field.length||row.length){row.push(field);rows.push(row)}field='';row=[];if(ch==='\r'&&next==='\n')i++}
-  else field+=ch;
- }
- if(field.length||row.length){row.push(field);rows.push(row)}
- return rows;
-}
+// Harvest chart is isolated from map rendering. Data requests time out cleanly.
 function updateHarvestChart(year){
- const svg=document.getElementById('harvestChart');
- if(!svg||!harvestReady)return;
- const years=Object.keys(harvestByYear).map(Number).filter(y=>y>=2004&&y<=2025).sort((a,b)=>a-b);
- if(!years.length)return;
- const vals=years.map(y=>harvestByYear[y]/1e6),max=Math.ceil(Math.max(...vals)/2)*2;
- const W=960,H=330,L=82,R=28,T=28,B=52,plotW=W-L-R,plotH=H-T-B;
- const x=i=>L+i*plotW/Math.max(1,years.length-1);
- const y=v=>T+plotH-(v/max)*plotH;
- let out='';
- for(let tick=0;tick<=max;tick+=2){
-  out+=`<line x1="${L}" y1="${y(tick)}" x2="${W-R}" y2="${y(tick)}" stroke="#e5ebee"/><text x="${L-12}" y="${y(tick)+4}" text-anchor="end" fill="#687783" font-size="12">${tick}</text>`;
- }
- const points=years.map((yr,i)=>`${x(i)},${y(vals[i])}`).join(' ');
- out+=`<text x="${L}" y="15" fill="#687783" font-size="12">Harvest volume (million m³)</text><polyline points="${points}" fill="none" stroke="#477b59" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
- years.forEach((yr,i)=>{
-  if(i%2===0||yr===2025)out+=`<text x="${x(i)}" y="${H-22}" text-anchor="middle" fill="#687783" font-size="12">${yr}</text>`;
-  out+=`<circle cx="${x(i)}" cy="${y(vals[i])}" r="3.5" fill="#477b59"/>`;
- });
- const idx=years.indexOf(Number(year));
- if(idx>=0){
-  out+=`<line x1="${x(idx)}" y1="${T}" x2="${x(idx)}" y2="${T+plotH}" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/><circle cx="${x(idx)}" cy="${y(vals[idx])}" r="7" fill="#b33a2b" stroke="#fff" stroke-width="2"/><text x="${Math.min(W-R-4,Math.max(L+4,x(idx)))}" y="${Math.max(T+14,y(vals[idx])-14)}" text-anchor="${idx>years.length-4?'end':'start'}" fill="#b33a2b" font-size="13" font-weight="700">${year}: ${vals[idx].toFixed(2)}M m³</text>`;
- }
- svg.innerHTML=out;
- const value=harvestByYear[year];
- const first=harvestByYear[2004];
- document.getElementById('harvestSelectedValue').textContent=value==null?'No data':(value/1e6).toFixed(2)+'M m³';
- document.getElementById('harvestSelectedLabel').textContent='Crown harvest volume in '+year;
- document.getElementById('harvestChangeValue').textContent=value==null||!first?'—':((value/first-1)*100>=0?'+':'')+((value/first-1)*100).toFixed(1)+'%';
+ try{
+  const svg=document.getElementById('harvestChart');
+  if(!svg||!harvestReady)return;
+  const years=Object.keys(harvestByYear).map(Number).filter(y=>y>=2004&&y<=2025).sort((a,b)=>a-b);
+  if(!years.length)return;
+  const vals=years.map(y=>harvestByYear[y]/1e6),max=Math.ceil(Math.max(...vals)/2)*2;
+  const W=960,H=330,L=82,R=28,T=28,B=52,pw=W-L-R,ph=H-T-B;
+  const x=i=>L+i*pw/Math.max(1,years.length-1),y=v=>T+ph-v/max*ph;
+  let out='';
+  for(let t=0;t<=max;t+=2)out+='<line x1="'+L+'" y1="'+y(t)+'" x2="'+(W-R)+'" y2="'+y(t)+'" stroke="#e5ebee"/><text x="'+(L-12)+'" y="'+(y(t)+4)+'" text-anchor="end" fill="#687783" font-size="12">'+t+'</text>';
+  out+='<text x="'+L+'" y="15" fill="#687783" font-size="12">Harvest volume (million m³)</text>';
+  const pts=years.map((yr,i)=>x(i)+','+y(vals[i])).join(' ');
+  out+='<polyline points="'+pts+'" fill="none" stroke="#477b59" stroke-width="3"/>';
+  years.forEach((yr,i)=>{out+='<circle cx="'+x(i)+'" cy="'+y(vals[i])+'" r="3.5" fill="#477b59"/>';if(i%2===0||yr===2025)out+='<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="12">'+yr+'</text>';});
+  const idx=years.indexOf(Number(year)),v=harvestByYear[year];
+  if(idx>=0)out+='<line x1="'+x(idx)+'" y1="'+T+'" x2="'+x(idx)+'" y2="'+(T+ph)+'" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/><circle cx="'+x(idx)+'" cy="'+y(v/1e6)+'" r="7" fill="#b33a2b" stroke="#fff" stroke-width="2"/>';
+  svg.innerHTML=out;
+  document.getElementById('harvestSelectedValue').textContent=Number.isFinite(v)?(v/1e6).toFixed(2)+'M m³':'—';
+  document.getElementById('harvestSelectedLabel').textContent='Crown harvest volume in '+year;
+  const base=harvestByYear[2004];
+  document.getElementById('harvestChangeValue').textContent=Number.isFinite(v)&&Number.isFinite(base)?(((v/base-1)*100>=0?'+':'')+((v/base-1)*100).toFixed(1)+'%'):'—';
+ }catch(e){console.warn('Harvest chart rendering error',e);}
+}
+function harvestTimeout(promise,ms){
+ return Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(new Error('request timed out')),ms))]);
 }
 (async function loadHarvestData(){
  const status=document.getElementById('harvestLoading');
- try{
-  const url='https://data.ontario.ca/dataset/6889a142-7a14-4998-9095-5332bac40703/resource/89b157e4-7fb0-4416-8dab-b5ea73693421/download/harvest_volume.csv';
-  let csv='',lastError=null;
-  for(const source of [url,'https://api.allorigins.win/raw?url='+encodeURIComponent(url)]){
-   try{
-    const response=await fetch(source,{cache:'no-cache'});
-    if(!response.ok)throw new Error('HTTP '+response.status);
-    csv=await response.text();
-    if(csv.length<100||!csv.toLowerCase().includes('volume'))throw new Error('Unexpected response');
-    break;
-   }catch(e){lastError=e}
-  }
-  if(!csv)throw lastError||new Error('No source available');
-  const rows=parseHarvestCSV(csv);
-  const headers=rows.shift().map(v=>v.replace(/^\\uFEFF/,'').trim().toLowerCase());
-  const yi=headers.indexOf('year'),vi=headers.indexOf('volume');
-  if(yi<0||vi<0)throw new Error('CSV columns not recognized: '+headers.join(', '));
-  rows.forEach(row=>{
-   const yr=Number(String(row[yi]||'').trim());
-   const vol=Number(String(row[vi]||'').replace(/,/g,'').trim());
-   if(yr>=2004&&yr<=2025&&Number.isFinite(vol))harvestByYear[yr]=(harvestByYear[yr]||0)+vol;
-  });
-  if(!Object.keys(harvestByYear).length)throw new Error('No annual records found');
-  harvestReady=true;
-  status.style.display='none';
-  updateHarvestChart(current);
- }catch(err){
-  status.textContent='The harvest data could not be loaded automatically ('+err.message+'). You can still open the official data source: ';
-  const link=document.createElement('a');
-  link.href='https://data.ontario.ca/en/dataset/report-on-forest-management-annual-summary-of-ontario-s-forest-management-activities/resource/89b157e4-7fb0-4416-8dab-b5ea73693421';
-  link.target='_blank';link.rel='noopener';link.textContent='Ontario harvest-volume CSV';
-  status.appendChild(link);
-  document.getElementById('harvestSelectedValue').textContent='Data unavailable';
-  document.getElementById('harvestSelectedLabel').textContent='Official data could not be fetched in this browser';
+ const url='https://data.ontario.ca/dataset/6889a142-7a14-4998-9095-5332bac40703/resource/89b157e4-7fb0-4416-8dab-b5ea73693421/download/harvest_volume.csv';
+ let lastError=null,csv='';
+ for(const source of [url,'https://api.allorigins.win/raw?url='+encodeURIComponent(url)]){
+  try{
+   const response=await harvestTimeout(fetch(source,{mode:'cors'}),9000);
+   if(!response.ok)throw new Error('HTTP '+response.status);
+   csv=await harvestTimeout(response.text(),9000);
+   if(csv.length<100)throw new Error('Empty or invalid CSV response');
+   break;
+  }catch(e){lastError=e;}
  }
+ if(csv){
+  try{
+   const rows=parseHarvestCSV(csv);
+   const headers=rows.shift().map(v=>v.replace(/^\uFEFF/,'').trim().toLowerCase());
+   const yi=headers.indexOf('year'),vi=headers.indexOf('volume');
+   if(yi<0||vi<0)throw new Error('Unexpected CSV headings');
+   rows.forEach(row=>{
+    const yr=Number(row[yi]),vol=Number(String(row[vi]).replace(/,/g,''));
+    if(yr>=2004&&yr<=2025&&Number.isFinite(vol))harvestByYear[yr]=(harvestByYear[yr]||0)+vol;
+   });
+   if(!Object.keys(harvestByYear).length)throw new Error('No 2004–2025 records');
+   harvestReady=true;status.style.display='none';updateHarvestChart(current);return;
+  }catch(e){lastError=e;}
+ }
+ status.textContent='Ontario’s harvest dataset could not be loaded in this browser ('+(lastError?lastError.message:'unknown error')+'). Use the official source link: ';
+ const a=document.createElement('a');
+ a.href='https://data.ontario.ca/en/dataset/report-on-forest-management-annual-summary-of-ontario-s-forest-management-activities/resource/89b157e4-7fb0-4416-8dab-b5ea73693421';
+ a.target='_blank';a.rel='noopener';a.textContent='Ontario Harvest Volume CSV';status.appendChild(a);
+ document.getElementById('harvestSelectedValue').textContent='Data unavailable';
+ document.getElementById('harvestSelectedLabel').textContent='Official data source did not respond';
 })();
-
 </script></body></html>
