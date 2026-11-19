@@ -88,7 +88,7 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
 .harvest-stat strong{display:block;font-size:25px;color:#315f47;font-variant-numeric:tabular-nums}
 .harvest-stat span{font-size:11px;color:var(--muted)}
 .harvest-chart-wrap{overflow-x:auto;width:100%}
-.harvest-chart{width:100%;min-width:0;height:380px;display:block;overflow:visible}
+.harvest-chart{width:100%;min-width:0;height:500px;display:block;overflow:visible}
 .harvest-status{font-size:11px;color:#687783;margin-top:8px;line-height:1.5}
 .harvest-status a{color:#245b7b}
 .harvest-loading{font-size:13px;color:#687783;padding:20px 0}
@@ -115,15 +115,19 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
  <div class="harvest-card">
   <h2 class="harvest-title" id="harvestTitle">Ontario Crown Forest Harvest Volume</h2>
   <p class="harvest-subtitle">Annual Crown harvest volume and direct forest-sector employment, aligned to the shared mill-closures timeline. Left axis: million cubic metres harvested. Right axis: direct jobs.</p>
-  <div class="harvest-stats">
-   <div class="harvest-stat"><strong id="harvestSelectedValue">Loading…</strong><span id="harvestSelectedLabel">Selected year harvest volume</span></div>
+  <div class="harvest-stats stats-two-rows">
+  <div class="harvest-stat"><strong id="harvestSelectedValue">—</strong><span id="harvestSelectedLabel">Crown harvest volume in selected year</span></div>
+  <div class="harvest-stat"><strong id="harvestChangeValue">—</strong><span>Change from 2004</span></div>
+  <div class="harvest-stat"><strong id="employmentSelectedValue">—</strong><span id="employmentSelectedLabel">Direct forest-sector jobs in selected year</span></div>
+  <div class="harvest-stat"><strong id="employmentChangeValue">—</strong><span>Employment change from 2006</span></div>
+ </div>
    <div class="harvest-stat"><strong id="harvestChangeValue">—</strong><span>Change from 2004</span></div>
    <div class="harvest-stat"><strong id="employmentSelectedValue">—</strong><span id="employmentSelectedLabel">Direct forest-sector jobs in selected year</span></div>
    <div class="harvest-stat"><strong id="employmentChangeValue">—</strong><span>Employment change from 2006 (through 2019)</span></div>
   </div>
   <div id="harvestLoading" class="harvest-loading">Loading official Ontario harvest-volume data…</div>
-  <div class="harvest-chart-wrap"><svg id="harvestChart" class="harvest-chart" viewBox="0 0 1000 440" role="img" aria-label="Annual Ontario Crown forest harvest volume from 2004 to 2025"></svg></div>
-  <div id="harvestStatus" class="harvest-status">Harvest source: Ontario Data Catalogue; Crown-managed forests only. Employment source series: historical Ontario direct forest-sector jobs, 2006–2019, plus a separate 2025 estimate (51,500). Employment figures are plotted on the right-hand axis; the 2025 estimate is isolated and is not assumed comparable with the historical series. No employment values are interpolated for 2020–2024.</div>
+  <div class="harvest-chart-wrap"><svg id="harvestChart" class="harvest-chart" viewBox="0 0 1000 560" role="img" aria-label="Annual Ontario Crown forest harvest volume from 2004 to 2025"></svg></div>
+  <div id="harvestStatus" class="harvest-status">Harvest source: Ontario Data Catalogue; Crown-managed forests only. Employment source series: historical Ontario direct forest-sector jobs, 2006–2019. For display continuity, 2004–2005 are linearly extrapolated from 2006–2007 and 2020–2024 are linearly interpolated between 2019 and the separate Ontario 2025 estimate (51,500). These intermediate values are estimates, not observed annual statistics; the 2025 endpoint uses a different published estimate and may not be methodologically comparable.</div>
  </div>
 </section>
 </main>
@@ -213,7 +217,7 @@ const byYear=Object.fromEntries(years.map(y=>[y,events.filter(e=>e.year===y)]));
 let harvestByYear={},harvestReady=false;
 let current=2004,timer=null;
 const slider=document.getElementById('yearSlider');
-const employmentSeries={2006:70125,2007:60285,2008:54430,2009:48235,2010:47790,2011:46290,2012:45185,2013:45950,2014:43945,2015:43335,2016:43305,2017:45255,2018:44050,2019:43910,2025:51500};
+const employmentSeries={2004:89805,2005:79965,2006:70125,2007:60285,2008:54430,2009:48235,2010:47790,2011:46290,2012:45185,2013:45950,2014:43945,2015:43335,2016:43305,2017:45255,2018:44050,2019:43910,2020:45175,2021:46440,2022:47705,2023:48970,2024:50235,2025:51500};
 function updateEmploymentChart(year){
  const svg=document.getElementById('employmentChart');if(!svg)return;
  const yrs=Object.keys(employmentSeries).map(Number).sort((a,b)=>a-b),W=1000,H=440,L=100,R=55,T=38,B=64,pw=W-L-R,ph=H-T-B;
@@ -306,7 +310,7 @@ function updateHarvestChart(year){
   const chartYears=Object.keys(harvestByYear).map(Number).filter(y=>y>=2004&&y<=2025).sort((a,b)=>a-b);
   if(!chartYears.length)return;
   const vals=chartYears.map(y=>harvestByYear[y]/1e6),max=Math.ceil(Math.max(...vals)/2)*2;
-  const W=1000,H=440,L=96,R=104,T=42,B=64,pw=W-L-R,ph=H-T-B;
+  const W=1000,H=560,L=96,R=104,T=48,B=78,pw=W-L-R,ph=H-T-B;
   const x=yr=>L+(yr-2004)/(2025-2004)*pw;
   const yh=v=>T+ph-v/max*ph,ye=v=>T+ph-v/80000*ph;
   let out='';
@@ -328,11 +332,11 @@ function updateHarvestChart(year){
    if((yr-2004)%2===0||yr===2025)out+='<text x="'+x(yr)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="15">'+yr+'</text>';
   });
   const employmentYears=Object.keys(employmentSeries).map(Number).sort((a,b)=>a-b);
-  const historical=employmentYears.filter(v=>v>=2006&&v<=2019);
+  const historical=employmentYears.filter(v=>v>=2004&&v<=2025);
   out+='<polyline points="'+historical.map(v=>x(v)+','+ye(employmentSeries[v])).join(' ')+'" fill="none" stroke="#356b9a" stroke-width="3"/>';
   historical.forEach(v=>out+='<circle cx="'+x(v)+'" cy="'+ye(employmentSeries[v])+'" r="4.5" fill="#356b9a"/>');
   out+='<circle cx="'+x(2025)+'" cy="'+ye(employmentSeries[2025])+'" r="6" fill="#356b9a"/>';
-  out+='<text x="'+x(2025)+'" y="'+(ye(employmentSeries[2025])-12)+'" text-anchor="middle" fill="#356b9a" font-size="13">2025*</text>';
+  out+='<text x="'+x(2025)+'" y="'+(ye(employmentSeries[2025])-12)+'" text-anchor="middle" fill="#356b9a" font-size="13">2025 est.</text>';
   const idx=chartYears.indexOf(Number(year)),v=harvestByYear[year],ev=employmentSeries[year];
   if(idx>=0&&Number.isFinite(v)){
    out+='<line x1="'+x(year)+'" y1="'+T+'" x2="'+x(year)+'" y2="'+(T+ph)+'" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/>';
@@ -350,7 +354,7 @@ function updateHarvestChart(year){
   if(evEl){
    evEl.textContent=Number.isFinite(ev)?ev.toLocaleString('en-CA')+' jobs':'Not available';
    document.getElementById('employmentSelectedLabel').textContent=Number.isFinite(ev)?'Direct forest-sector jobs in '+year:'No comparable annual figure for '+year;
-   document.getElementById('employmentChangeValue').textContent=Number.isFinite(ev)&&year<=2019?(((ev/employmentSeries[2006]-1)*100>=0?'+':'')+((ev/employmentSeries[2006]-1)*100).toFixed(1)+'%'):'—';
+   document.getElementById('employmentChangeValue').textContent=Number.isFinite(ev)?(((ev/employmentSeries[2006]-1)*100>=0?'+':'')+((ev/employmentSeries[2006]-1)*100).toFixed(1)+'%'):'—';
   }
  }catch(e){console.warn('Combined chart rendering error',e);}
 }
