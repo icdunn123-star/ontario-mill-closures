@@ -16,6 +16,25 @@ input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;fon
 .small{font-size:12px;color:var(--muted);line-height:1.45}.legend-title{font-size:12px;font-weight:700;margin:14px 0 6px}.type-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;margin:7px 0 13px}.type-legend-item{display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.25}.type-dot{display:inline-block;width:13px;height:13px;flex:0 0 13px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #53616b,0 1px 3px #17212b66;background:currentColor}
 #yearList{max-height:220px;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.yearrow{display:flex;justify-content:space-between;padding:4px 0;font-size:12px}
 footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
+
+.housing-section{max-width:1400px;margin:0 auto 18px;padding:0 14px}
+.housing-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d}
+.housing-heading{font-size:20px;margin:0 0 5px;color:var(--ink)}
+.housing-subtitle{font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.5}
+.housing-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 15px}
+.housing-kpi{background:#f1f5f7;border-radius:8px;padding:12px}
+.housing-kpi b{display:block;font-size:23px;margin-bottom:3px}
+.housing-kpi span{font-size:11px;color:var(--muted);line-height:1.35}
+.housing-chart-wrap{width:100%;overflow-x:auto}
+.housing-chart{display:block;width:100%;min-width:580px;height:auto}
+.housing-legend{display:flex;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:5px 0 12px}
+.housing-legend span{display:inline-flex;align-items:center;gap:7px}
+.housing-swatch{width:13px;height:13px;border-radius:2px;background:#2b7198;display:inline-block}
+.housing-target-swatch{width:19px;height:0;border-top:3px dashed #b33a2b;display:inline-block}
+.housing-notes{font-size:11px;line-height:1.5;color:#687783;margin-top:10px}
+.housing-notes a{color:#245b7b}
+@media(max-width:650px){.housing-kpis{grid-template-columns:1fr}.housing-card{padding:13px}}
+
 @media(max-width:900px){main{grid-template-columns:1fr}#map{height:60vh;min-height:430px}}
 </style></head><body>
 <header><div class="association-title">Ontario Forest Industries Association</div><h1>Forest Product Mill Closures in Ontario Since 2004</h1><p>Annual facility activity changes · 2004–2025 · Approximate town/city locations</p></header>
@@ -27,6 +46,48 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
 <div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
 <div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
 <div id="yearList"></div></aside></main>
+<section class="housing-section" aria-labelledby="housingTitle">
+ <div class="housing-card">
+  <h2 class="housing-heading" id="housingTitle">Ontario Housing Construction Progress</h2>
+  <p class="housing-subtitle">Annual housing starts compared with the average annual pace implied by the province's goal of 1.5 million homes from 2022 to 2031.</p>
+  <div class="housing-kpis">
+   <div class="housing-kpi"><b>325,326</b><span>Housing starts, 2022–2025</span></div>
+   <div class="housing-kpi"><b>54.2%</b><span>Of the 600,000 starts implied by a straight-line pace through 2025</span></div>
+   <div class="housing-kpi"><b>150,000</b><span>Annual pace implied by 1.5 million homes over 10 years</span></div>
+  </div>
+  <div class="housing-legend">
+   <span><i class="housing-swatch"></i> Actual housing starts</span>
+   <span><i class="housing-target-swatch"></i> 150,000 annual pace benchmark</span>
+  </div>
+  <div class="housing-chart-wrap">
+   <svg class="housing-chart" viewBox="0 0 960 340" role="img" aria-labelledby="housingChartTitle housingChartDesc">
+    <title id="housingChartTitle">Ontario annual housing starts, 2022 to 2025</title>
+    <desc id="housingChartDesc">Bars show annual housing starts of 96,080 in 2022, 89,297 in 2023, 74,573 in 2024 and 65,376 in 2025. A dashed line marks 150,000 starts per year, the straight-line pace implied by the province's 1.5 million homes goal.</desc>
+    <g font-family="Arial,Helvetica,sans-serif" font-size="12" fill="#637381">
+     <line x1="92" y1="260" x2="900" y2="260" stroke="#dce3e8"/><text x="78" y="264" text-anchor="end">0</text>
+     <line x1="92" y1="194.4" x2="900" y2="194.4" stroke="#e8edf0"/><text x="78" y="198.4" text-anchor="end">50,000</text>
+     <line x1="92" y1="128.8" x2="900" y2="128.8" stroke="#e8edf0"/><text x="78" y="132.8" text-anchor="end">100,000</text>
+     <line x1="92" y1="63.1" x2="900" y2="63.1" stroke="#b33a2b" stroke-width="2.5" stroke-dasharray="8 6"/>
+     <text x="900" y="51" text-anchor="end" fill="#b33a2b" font-weight="700">150,000 annual pace</text>
+     <text x="92" y="20" fill="#637381">Housing starts (units)</text>
+    </g>
+    <g fill="#2b7198">
+     <rect x="165" y="134.0" width="105" height="126" rx="5"/><rect x="355" y="142.8" width="105" height="117.2" rx="5"/><rect x="545" y="162.1" width="105" height="97.9" rx="5"/><rect x="735" y="174.2" width="105" height="85.8" rx="5"/>
+    </g>
+    <g font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#17212b" font-weight="700" text-anchor="middle">
+     <text x="217.5" y="123">96,080</text><text x="407.5" y="132">89,297</text><text x="597.5" y="151">74,573</text><text x="787.5" y="163">65,376</text>
+    </g>
+    <g font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#17212b" text-anchor="middle">
+     <text x="217.5" y="285">2022</text><text x="407.5" y="285">2023</text><text x="597.5" y="285">2024</text><text x="787.5" y="285">2025</text>
+    </g>
+   </svg>
+  </div>
+  <div class="housing-notes">
+   <b>How to read this:</b> “Actual construction” means housing starts—the number of homes where construction began, not homes completed. The dashed line is a simple 150,000-per-year benchmark (1.5 million divided evenly across 10 years); it is not the province's separate annual municipal housing-target measure. The province's broader 1.5-million goal also counts additional residential units and certain long-term-care, student-housing and retirement-home beds, so this chart isolates conventional housing starts rather than reproducing the government's full progress measure.
+   <br><b>Sources:</b> Ontario Ministry of Finance, <a href="https://budget.ontario.ca/2026/fallstatement/ecotables.html" target="_blank" rel="noopener">2026 Fall Statement, Economic Data Tables</a> (Ontario housing starts, 2022–2025); Government of Ontario, <a href="https://www.ontario.ca/page/tracking-housing-supply-progress" target="_blank" rel="noopener">Tracking housing supply progress</a>.
+  </div>
+ </div>
+</section>
 <footer><b>Method:</b> Closure year is defined here as the first year after a recorded active (Y) year in which the facility is marked inactive (N) in the workbook's TREES_Matrix. This is an analytical proxy, not an independently confirmed physical mill shutdown date. Locations are town/city-centre approximations based on the workbook's FacilityLocation field; markers are not exact mill-site coordinates. Facilities with no town/city value in the workbook are omitted from the map (8 records) but retained in the source workbook. Basemap tiles © Esri, USGS, NOAA. Place-centre coordinates are approximate and should be treated as indicative.</footer>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
