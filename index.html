@@ -193,10 +193,11 @@ render(2004);
   const t=now.getTime();
   const elapsed=Math.max(0,Math.min(deadline-start,t-start));
   const remaining=Math.max(0,deadline-t);
-  const scheduled=Math.min(baseline,annual*(elapsed/(365.2425*24*60*60*1000)));
+  const scheduled=Math.min(baseline,annual*(elapsed/(deadline-start)));
   const daysLeft=remaining/(24*60*60*1000);
+  const stillToSchedule=Math.max(0,baseline-scheduled);
   due.textContent=fmt(scheduled);
-  daily.textContent=daysLeft>0?fmt(baseline/daysLeft):'0';
+  daily.textContent=daysLeft>0?fmt(stillToSchedule/daysLeft):'0';
   clock.textContent=new Intl.DateTimeFormat('en-CA',{timeZone:'America/Toronto',dateStyle:'medium',timeStyle:'medium'}).format(now)+' ET';
  }
  tick();
