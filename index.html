@@ -165,6 +165,7 @@ document.getElementById('typeLegend').innerHTML=facilityTypes.map(type=>{
  return `<div class="type-legend-item"><span class="type-dot" style="color:${style.color}"></span><span>${type}</span></div>`;
 }).join('');
 const byYear=Object.fromEntries(years.map(y=>[y,events.filter(e=>e.year===y)]));
+let harvestByYear={},harvestReady=false;
 let current=2004,timer=null;
 const slider=document.getElementById('yearSlider');
 function jitter(code){let n=parseInt(code)||1;return [((n*17)%11-5)*0.0018,((n*31)%13-6)*0.0018]}
@@ -235,8 +236,6 @@ render(2004);
 
 // Official Ontario Crown forest harvest-volume series. The source CSV is
 // aggregated by calendar year across management units, species and products.
-let harvestByYear={};
-let harvestReady=false;
 function parseHarvestCSV(text){
  const rows=[];let row=[],field='',quoted=false;
  for(let i=0;i<text.length;i++){
