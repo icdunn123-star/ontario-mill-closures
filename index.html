@@ -272,8 +272,8 @@ function parseHarvestCSV(text){
    else field+=ch;
   }else if(ch==='"')quoted=true;
   else if(ch===','){row.push(field);field='';}
-  else if(ch==='\\n'){row.push(field);rows.push(row);row=[];field='';}
-  else if(ch!=='\\r')field+=ch;
+  else if(ch==='\n'){row.push(field);rows.push(row);row=[];field='';}
+  else if(ch!=='\r')field+=ch;
  }
  if(field.length||row.length){row.push(field);rows.push(row);}
  return rows;
@@ -301,7 +301,7 @@ function aggregateHarvestRecords(records){
   if(!response.ok)throw new Error('CSV HTTP '+response.status);
   const csv=await harvestTimeout(response.text(),12000);
   const rows=parseHarvestCSV(csv);
-  const headers=rows.shift().map(v=>v.replace(/^\\uFEFF/,'').trim().toLowerCase());
+  const headers=rows.shift().map(v=>v.replace(/^\uFEFF/,'').trim().toLowerCase());
   const yi=headers.indexOf('year'),vi=headers.indexOf('volume');
   if(yi<0||vi<0)throw new Error('Unexpected CSV headings');
   const records=rows.map(row=>({Year:row[yi],Volume:row[vi]}));
