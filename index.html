@@ -11,16 +11,7 @@ main{max-width:1400px;margin:0 auto;padding:14px;display:grid;grid-template-colu
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;box-shadow:0 2px 8px #1020300d}
 .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0}
 .timeline-bar{max-width:1372px;margin:12px auto 0;padding:12px 16px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 2px 8px #1020300d}
-.timeline-controls{display:flex;align-items:center;gap:12px;flex-wrap:nowrap}
-.timeline-current{min-width:120px;gap:6px}
-.timeline-current .small{max-width:68px;line-height:1.15}
-.timeline-current .year{font-size:26px;white-space:nowrap}
-.timeline-bar{padding:8px 12px}
-.timeline-bar .controls{gap:5px}
-.timeline-bar .controls button{padding:6px 9px;font-size:12px}
-.timeline-bar #status{font-size:11px}
-.timeline-bar label{margin:5px 0 0}
-.timeline-bar input[type=range]{margin:2px 0 0;height:14px}
+.timeline-controls{display:flex;align-items:center;gap:16px;flex-wrap:nowrap}
 .timeline-current{display:flex;align-items:center;gap:9px;min-width:130px}
 .timeline-current .year{font-size:30px}
 .timeline-bar .controls button{padding:8px 12px}
@@ -32,21 +23,18 @@ input[type=range]{width:100%;accent-color:var(--accent)}.year{font-size:38px;fon
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}.kpi{background:#f1f5f7;border-radius:8px;padding:10px}.kpi b{display:block;font-size:23px}.kpi span{font-size:11px;color:var(--muted)}
 .small{font-size:12px;color:var(--muted);line-height:1.45}.legend-title{font-size:12px;font-weight:700;margin:14px 0 6px}.type-legend{display:grid;grid-template-columns:1fr 1fr;gap:7px 9px;margin:7px 0 13px}.type-legend-item{display:flex;align-items:center;gap:7px;font-size:11px;line-height:1.25}.type-dot{display:inline-block;width:13px;height:13px;flex:0 0 13px;border:2px solid #fff;border-radius:50%;box-shadow:0 0 0 1px #53616b,0 1px 3px #17212b66;background:currentColor}
 #yearList{max-height:220px;overflow:auto;border-top:1px solid var(--line);margin-top:12px;padding-top:8px}.yearrow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;column-gap:14px;padding:4px 0;font-size:12px;font-variant-numeric:tabular-nums}.yearrow > span{min-width:0}.yearrow > b{min-width:2.5ch;text-align:right;font-variant-numeric:tabular-nums}
-aside.panel{max-width:1372px;margin:8px auto 0;display:grid;grid-template-columns:minmax(210px,.8fr) minmax(300px,1.2fr) minmax(240px,1fr);gap:6px 18px;align-items:center;padding:8px 14px}
-aside.panel > .small:first-of-type{grid-column:1;grid-row:1;font-size:11px}
-aside.panel > .kpis{grid-column:1;grid-row:2;margin:2px 0}
+aside.panel{max-width:1372px;margin:10px auto 0;display:grid;grid-template-columns:minmax(250px,1.1fr) minmax(320px,1.6fr) minmax(290px,1.4fr);gap:10px 22px;align-items:start;padding:12px 16px}
+aside.panel > .small:first-of-type{grid-column:1;grid-row:1}
+aside.panel > .kpis{grid-column:1;grid-row:2;margin:5px 0}
 aside.panel > .legend-title{grid-column:2;grid-row:1;margin:0}
-aside.panel > #typeLegend{grid-column:2;grid-row:2;grid-template-columns:1fr 1fr;gap:4px 10px;margin:0}
-aside.panel > .small:last-of-type{grid-column:3;grid-row:1 / span 2;font-size:10px}
-aside.panel > #yearList{display:none !important}
+aside.panel > #typeLegend{grid-column:2;grid-row:2;grid-template-columns:1fr 1fr;gap:6px 12px;margin:0}
+aside.panel > .small:last-of-type{grid-column:3;grid-row:1 / span 2;font-size:11px}
+aside.panel > #yearList{grid-column:1 / -1;grid-row:3;display:flex;flex-wrap:wrap;align-items:center;gap:5px 16px;max-height:none;overflow:visible;margin:5px 0 0;padding:7px 0 0}
 aside.panel > #yearList > b{flex-basis:100%}
 aside.panel > #yearList .yearrow{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:12px;align-items:center;min-width:142px;padding:4px 2px !important;margin:0 !important;font-size:12px !important}
 aside.panel > #yearList .yearrow > b{min-width:3ch;text-align:right}
 aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-top:1px solid var(--line);padding-left:12px !important;font-weight:700}footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#687783;line-height:1.45}
 
-.employment-section{max-width:1400px;margin:14px auto;padding:0 14px}
-.employment-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d}
-.employment-card .harvest-chart{height:400px}
 .housing-section{max-width:1400px;margin:0 auto 18px;padding:0 14px}
 .housing-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:18px;box-shadow:0 2px 8px #1020300d}
 .housing-heading{font-size:20px;margin:0 0 5px;color:var(--ink)}
@@ -88,7 +76,7 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
 .harvest-stat strong{display:block;font-size:25px;color:#315f47;font-variant-numeric:tabular-nums}
 .harvest-stat span{font-size:11px;color:var(--muted)}
 .harvest-chart-wrap{overflow-x:auto;width:100%}
-.harvest-chart{width:100%;min-width:0;height:500px;display:block;overflow:visible}
+.harvest-chart{width:100%;min-width:0;height:380px;display:block;overflow:visible}
 .harvest-status{font-size:11px;color:#687783;margin-top:8px;line-height:1.5}
 .harvest-status a{color:#245b7b}
 .harvest-loading{font-size:13px;color:#687783;padding:20px 0}
@@ -97,42 +85,35 @@ aside.panel > #yearList .yearrow:last-child{margin-left:auto !important;border-t
 <div class="timeline-bar">
  <div class="timeline-controls">
   <div class="timeline-current"><span class="small">Selected year</span><strong class="year" id="yearLabel">2004</strong></div>
-  <div class="controls"><button id="play">▶ Play</button><button class="secondary" id="back">−1 year</button><button class="secondary" id="forward">+1 year</button><button class="secondary" id="reset">Reset</button></div>
-  <span class="small" id="status">Showing closures through 2004</span>
- </div>
- <label for="yearSlider" class="small">Shared timeline — map, harvest and employment</label>
- <input id="yearSlider" type="range" min="2004" max="2025" step="1" value="2004">
-</div>
 <aside class="panel">
 <div class="small">Closures shown cumulatively up to the selected year</div>
 <div class="kpis"><div class="kpi"><b id="yearCount">0</b><span>closures in selected year</span></div><div class="kpi"><b id="totalCount">0</b><span>cumulative closures</span></div></div>
 <div class="legend-title">Facility type symbols</div><div id="typeLegend" class="type-legend"></div>
 <div class="small">Select a marker for facility name, facility code, facility type, town/city and the year it first changed from active (Y) to inactive (N) in the annual matrix.</div>
-<div id="yearList" hidden></div></aside>
+<div id="yearList"></div></aside>
+
+  <div class="controls"><button id="play">▶ Play</button><button class="secondary" id="back">−1 year</button><button class="secondary" id="forward">+1 year</button><button class="secondary" id="reset">Reset</button></div>
+  <span class="small" id="status">Showing closures through 2004</span>
+ </div>
+ <label for="yearSlider" class="small">Shared timeline — map and harvest chart</label>
+ <input id="yearSlider" type="range" min="2004" max="2025" step="1" value="2004">
+</div>
 
 <main><section><div id="map"></div></section>
 <section class="harvest-section" aria-labelledby="harvestTitle">
  <div class="harvest-card">
   <h2 class="harvest-title" id="harvestTitle">Ontario Crown Forest Harvest Volume</h2>
-  <p class="harvest-subtitle">Annual Crown harvest volume and Statistics Canada employment in forestry, logging and support activities, aligned to the shared mill-closures timeline. Left axis: million cubic metres harvested. Right axis: jobs.</p>
-  <div class="harvest-stats stats-two-rows">
-  <div class="harvest-stat"><strong id="harvestSelectedValue">—</strong><span id="harvestSelectedLabel">Crown harvest volume in selected year</span></div>
-  <div class="harvest-stat"><strong id="harvestChangeValue">—</strong><span>Change from 2004</span></div>
-  <div class="harvest-stat"><strong id="employmentSelectedValue">—</strong><span id="employmentSelectedLabel">Forestry, logging & support jobs in selected year</span></div>
-  <div class="harvest-stat"><strong id="employmentChangeValue">—</strong><span>Employment change from 2006</span></div>
- </div>
+  <p class="harvest-subtitle">Annual volume harvested from Ontario's managed Crown forests, aligned to the year selected on the mill-closures timeline.</p>
+  <div class="harvest-stats">
+   <div class="harvest-stat"><strong id="harvestSelectedValue">Loading…</strong><span id="harvestSelectedLabel">Selected year harvest volume</span></div>
    <div class="harvest-stat"><strong id="harvestChangeValue">—</strong><span>Change from 2004</span></div>
-   <div class="harvest-stat"><strong id="employmentSelectedValue">—</strong><span id="employmentSelectedLabel">Direct forest-sector jobs in selected year</span></div>
-   <div class="harvest-stat"><strong id="employmentChangeValue">—</strong><span>Employment change from 2006 (through 2019)</span></div>
   </div>
   <div id="harvestLoading" class="harvest-loading">Loading official Ontario harvest-volume data…</div>
-  <div class="harvest-chart-wrap"><svg id="harvestChart" class="harvest-chart" viewBox="0 0 1000 560" role="img" aria-label="Annual Ontario Crown forest harvest volume from 2004 to 2025"></svg></div>
-  <div id="harvestStatus" class="harvest-status">Harvest source: Ontario Data Catalogue; Crown-managed forests only. Employment source: Statistics Canada, Table 14-10-0202-01, Employment by industry, annual; Ontario; All employees; Forestry, logging and support [11N]. Values are annual estimates in persons, 2004–2025, transcribed from the uploaded table. This category does not include wood product or paper manufacturing, which are not separately provided in this downloaded table. Statistics Canada data-quality flags: A = excellent; B = very good.</div>
+  <div class="harvest-chart-wrap"><svg id="harvestChart" class="harvest-chart" viewBox="0 0 1000 440" role="img" aria-label="Annual Ontario Crown forest harvest volume from 2004 to 2025"></svg></div>
+  <div id="harvestStatus" class="harvest-status">Source: Ontario Data Catalogue, Harvest Volume dataset. Volumes are summed across management units, species groups and product types and shown in million cubic metres. Crown-managed forests only; excludes private land and provincial parks.</div>
  </div>
 </section>
 </main>
-
-
 
 
 <section class="housing-section" aria-labelledby="housingTitle">
@@ -217,30 +198,11 @@ const byYear=Object.fromEntries(years.map(y=>[y,events.filter(e=>e.year===y)]));
 let harvestByYear={},harvestReady=false;
 let current=2004,timer=null;
 const slider=document.getElementById('yearSlider');
-const employmentSeries={2004:7966,2005:7666,2006:7205,2007:6332,2008:5544,2009:4406,2010:4592,2011:4870,2012:4831,2013:4871,2014:4706,2015:4887,2016:4942,2017:4594,2018:4372,2019:4163,2020:3708,2021:3832,2022:3677,2023:3867,2024:4489,2025:4198};
-function updateEmploymentChart(year){
- const svg=document.getElementById('employmentChart');if(!svg)return;
- const yrs=Object.keys(employmentSeries).map(Number).sort((a,b)=>a-b),W=1000,H=440,L=100,R=55,T=38,B=64,pw=W-L-R,ph=H-T-B;
- const x=yr=>L+(yr-2006)/(2025-2006)*pw,y=v=>T+ph-(v/80000)*ph;
- let out='';
- for(let t=0;t<=80000;t+=10000)out+='<line x1="'+L+'" y1="'+y(t)+'" x2="'+(W-R)+'" y2="'+y(t)+'" stroke="#e5ebee"/><text x="'+(L-12)+'" y="'+(y(t)+5)+'" text-anchor="end" fill="#687783" font-size="16">'+(t/1000)+'k</text>';
- out+='<text x="'+L+'" y="18" fill="#687783" font-size="16">Direct jobs</text>';
- const historical=yrs.filter(v=>v<=2019);
- out+='<polyline points="'+historical.map(v=>x(v)+','+y(employmentSeries[v])).join(' ')+'" fill="none" stroke="#477b59" stroke-width="3"/>';
- historical.forEach(v=>{out+='<circle cx="'+x(v)+'" cy="'+y(employmentSeries[v])+'" r="4.5" fill="#477b59"/>';if(v%2===0||v===2019)out+='<text x="'+x(v)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="15">'+v+'</text>';});
- out+='<circle cx="'+x(2025)+'" cy="'+y(employmentSeries[2025])+'" r="6" fill="#477b59"/><text x="'+x(2025)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="15">2025*</text>';
- const v=employmentSeries[year];
- if(Number.isFinite(v)){out+='<line x1="'+x(year)+'" y1="'+T+'" x2="'+x(year)+'" y2="'+(T+ph)+'" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/><circle cx="'+x(year)+'" cy="'+y(v)+'" r="8" fill="#b33a2b" stroke="#fff" stroke-width="2"/>';}
- svg.innerHTML=out;
- document.getElementById('employmentSelectedValue').textContent=Number.isFinite(v)?v.toLocaleString('en-CA')+' jobs':'Not available';
- document.getElementById('employmentSelectedLabel').textContent=Number.isFinite(v)?'Forestry, logging & support jobs in '+year:'No comparable annual figure for '+year;
- const base=employmentSeries[2006];document.getElementById('employmentChangeValue').textContent=Number.isFinite(v)&&year<=2019?(((v/base-1)*100>=0?'+':'')+((v/base-1)*100).toFixed(1)+'%'):'—';
-}
 function jitter(code){let n=parseInt(code)||1;return [((n*17)%11-5)*0.0018,((n*31)%13-6)*0.0018]}
 function render(y){
  current=y;slider.value=y;document.getElementById('yearLabel').textContent=y;
  updateHarvestChart(y);
-  document.getElementById('yearCount').textContent=byYear[y].length;
+ document.getElementById('yearCount').textContent=byYear[y].length;
  const visible=events.filter(e=>e.year<=y);
  document.getElementById('totalCount').textContent=visible.length;
  document.getElementById('status').textContent=`Showing ${visible.length} of ${events.length} mapped closures through ${y}`;
@@ -310,53 +272,22 @@ function updateHarvestChart(year){
   const chartYears=Object.keys(harvestByYear).map(Number).filter(y=>y>=2004&&y<=2025).sort((a,b)=>a-b);
   if(!chartYears.length)return;
   const vals=chartYears.map(y=>harvestByYear[y]/1e6),max=Math.ceil(Math.max(...vals)/2)*2;
-  const W=1000,H=560,L=96,R=104,T=48,B=78,pw=W-L-R,ph=H-T-B;
-  const x=yr=>L+(yr-2004)/(2025-2004)*pw;
-  const yh=v=>T+ph-v/max*ph,ye=v=>T+ph-v/10000*ph;
+  const W=1000,H=440,L=96,R=72,T=36,B=64,pw=W-L-R,ph=H-T-B;
+  const x=i=>L+i*pw/Math.max(1,chartYears.length-1),y=v=>T+ph-v/max*ph;
   let out='';
-  for(let t=0;t<=max;t+=2){
-   const yy=yh(t);
-   out+='<line x1="'+L+'" y1="'+yy+'" x2="'+(W-R)+'" y2="'+yy+'" stroke="#e5ebee"/>';
-   out+='<text x="'+(L-12)+'" y="'+(yy+5)+'" text-anchor="end" fill="#477b59" font-size="15">'+t+'</text>';
-  }
-  for(let t=0;t<=10000;t+=1000){
-   const yy=ye(t);
-   out+='<text x="'+(W-R+12)+'" y="'+(yy+5)+'" text-anchor="start" fill="#356b9a" font-size="15">'+(t/1000)+'k</text>';
-  }
-  out+='<text x="'+L+'" y="18" fill="#477b59" font-size="16">Harvest volume (million m³)</text>';
-  out+='<text x="'+(W-R)+'" y="18" text-anchor="end" fill="#356b9a" font-size="16">Forestry, logging &amp; support jobs</text>';
-  const hp=chartYears.map(yr=>x(yr)+','+yh(harvestByYear[yr]/1e6)).join(' ');
-  out+='<polyline points="'+hp+'" fill="none" stroke="#477b59" stroke-width="3"/>';
-  chartYears.forEach((yr,i)=>{
-   out+='<circle cx="'+x(yr)+'" cy="'+yh(vals[i])+'" r="4" fill="#477b59"/>';
-   if((yr-2004)%2===0||yr===2025)out+='<text x="'+x(yr)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="15">'+yr+'</text>';
-  });
-  const employmentYears=Object.keys(employmentSeries).map(Number).sort((a,b)=>a-b);
-  const historical=employmentYears.filter(v=>v>=2004&&v<=2025);
-  out+='<polyline points="'+historical.map(v=>x(v)+','+ye(employmentSeries[v])).join(' ')+'" fill="none" stroke="#356b9a" stroke-width="3"/>';
-  historical.forEach(v=>out+='<circle cx="'+x(v)+'" cy="'+ye(employmentSeries[v])+'" r="4.5" fill="#356b9a"/>');
-  out+='<circle cx="'+x(2025)+'" cy="'+ye(employmentSeries[2025])+'" r="6" fill="#356b9a"/>';
-  out+='<text x="'+x(2025)+'" y="'+(ye(employmentSeries[2025])-12)+'" text-anchor="middle" fill="#356b9a" font-size="13">2025 est.</text>';
-  const idx=chartYears.indexOf(Number(year)),v=harvestByYear[year],ev=employmentSeries[year];
-  if(idx>=0&&Number.isFinite(v)){
-   out+='<line x1="'+x(year)+'" y1="'+T+'" x2="'+x(year)+'" y2="'+(T+ph)+'" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/>';
-   out+='<circle cx="'+x(year)+'" cy="'+yh(v/1e6)+'" r="7" fill="#b33a2b" stroke="#fff" stroke-width="2"/>';
-  }
-  if(Number.isFinite(ev))out+='<circle cx="'+x(year)+'" cy="'+ye(ev)+'" r="8" fill="#b33a2b" stroke="#fff" stroke-width="2"/>';
-  out+='<line x1="'+(L+4)+'" y1="'+(H-4)+'" x2="'+(L+28)+'" y2="'+(H-4)+'" stroke="#477b59" stroke-width="3"/><text x="'+(L+34)+'" y="'+(H+1)+'" fill="#477b59" font-size="14">Harvest</text>';
-  out+='<line x1="'+(L+130)+'" y1="'+(H-4)+'" x2="'+(L+154)+'" y2="'+(H-4)+'" stroke="#356b9a" stroke-width="3"/><text x="'+(L+160)+'" y="'+(H+1)+'" fill="#356b9a" font-size="14">Forestry, logging &amp; support</text>';
+  for(let t=0;t<=max;t+=2)out+='<line x1="'+L+'" y1="'+y(t)+'" x2="'+(W-R)+'" y2="'+y(t)+'" stroke="#e5ebee"/><text x="'+(L-12)+'" y="'+(y(t)+4)+'" text-anchor="end" fill="#687783" font-size="16">'+t+'</text>';
+  out+='<text x="'+L+'" y="15" fill="#687783" font-size="16">Harvest volume (million m³)</text>';
+  const pts=chartYears.map((yr,i)=>x(i)+','+y(vals[i])).join(' ');
+  out+='<polyline points="'+pts+'" fill="none" stroke="#477b59" stroke-width="3"/>';
+  chartYears.forEach((yr,i)=>{out+='<circle cx="'+x(i)+'" cy="'+y(vals[i])+'" r="4.5" fill="#477b59"/>';if(i%2===0||yr===2025)out+='<text x="'+x(i)+'" y="'+(H-22)+'" text-anchor="middle" fill="#687783" font-size="16">'+yr+'</text>';});
+  const idx=chartYears.indexOf(Number(year)),v=harvestByYear[year];
+  if(idx>=0&&Number.isFinite(v))out+='<line x1="'+x(idx)+'" y1="'+T+'" x2="'+x(idx)+'" y2="'+(T+ph)+'" stroke="#b33a2b" stroke-width="2" stroke-dasharray="5 4"/><circle cx="'+x(idx)+'" cy="'+y(v/1e6)+'" r="7" fill="#b33a2b" stroke="#fff" stroke-width="2"/>';
   svg.innerHTML=out;
   document.getElementById('harvestSelectedValue').textContent=Number.isFinite(v)?(v/1e6).toFixed(2)+'M m³':'No data';
   document.getElementById('harvestSelectedLabel').textContent='Crown harvest volume in '+year;
   const base=harvestByYear[2004];
   document.getElementById('harvestChangeValue').textContent=Number.isFinite(v)&&Number.isFinite(base)?(((v/base-1)*100>=0?'+':'')+((v/base-1)*100).toFixed(1)+'%'):'—';
-  const evEl=document.getElementById('employmentSelectedValue');
-  if(evEl){
-   evEl.textContent=Number.isFinite(ev)?ev.toLocaleString('en-CA')+' jobs':'Not available';
-   document.getElementById('employmentSelectedLabel').textContent=Number.isFinite(ev)?'Direct forest-sector jobs in '+year:'No comparable annual figure for '+year;
-   document.getElementById('employmentChangeValue').textContent=Number.isFinite(ev)?(((ev/employmentSeries[2006]-1)*100>=0?'+':'')+((ev/employmentSeries[2006]-1)*100).toFixed(1)+'%'):'—';
-  }
- }catch(e){console.warn('Combined chart rendering error',e);}
+ }catch(e){console.warn('Harvest chart rendering error',e);}
 }
 function harvestTimeout(promise,ms){
  return Promise.race([promise,new Promise((_,reject)=>setTimeout(()=>reject(new Error('request timed out')),ms))]);
