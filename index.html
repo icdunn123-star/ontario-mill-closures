@@ -58,7 +58,7 @@ footer{max-width:1400px;margin:0 auto;padding:0 16px 16px;font-size:11px;color:#
 .harvest-stat strong{display:block;font-size:25px;color:#315f47;font-variant-numeric:tabular-nums}
 .harvest-stat span{font-size:11px;color:var(--muted)}
 .harvest-chart-wrap{overflow-x:auto;width:100%}
-.harvest-chart{width:100%;min-width:580px;height:auto;display:block}
+.harvest-chart{width:100%;min-width:580px;height:330px;display:block;overflow:visible}
 .harvest-status{font-size:11px;color:#687783;margin-top:8px;line-height:1.5}
 .harvest-status a{color:#245b7b}
 .harvest-loading{font-size:13px;color:#687783;padding:20px 0}
@@ -284,22 +284,38 @@ function updateHarvestChart(year){
  const status=document.getElementById('harvestLoading');
  try{
   const url='https://data.ontario.ca/dataset/6889a142-7a14-4998-9095-5332bac40703/resource/89b157e4-7fb0-4416-8dab-b5ea73693421/download/harvest_volume.csv';
-  const response=await fetch(url,{cache:'no-cache'});
-  if(!response.ok)throw new Error('Ontario data download returned '+response.status);
-  const rows=parseHarvestCSV(await response.text());
-  const headers=rows.shift().map(v=>v.trim().toLowerCase());
+  let csv='',lastError=null;
+  for(const source of [url,'https://api.allorigins.win/raw?url='+encodeURIComponent(url)]){
+   try{
+    const response=await fetch(source,{cache:'no-cache'});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    csv=await response.text();
+    if(csv.length<100||!csv.toLowerCase().includes('volume'))throw new Error('Unexpected response');
+    break;
+   }catch(e){lastError=e}
+  }
+  if(!csv)throw lastError||new Error('No source available');
+  const rows=parseHarvestCSV(csv);
+  const headers=rows.shift().map(v=>v.replace(/^\\uFEFF/,'').trim().toLowerCase());
   const yi=headers.indexOf('year'),vi=headers.indexOf('volume');
-  if(yi<0||vi<0)throw new Error('Unexpected CSV column headings');
+  if(yi<0||vi<0)throw new Error('CSV columns not recognized: '+headers.join(', '));
   rows.forEach(row=>{
-   const yr=Number(row[yi]),vol=Number(String(row[vi]).replace(/,/g,''));
+   const yr=Number(String(row[yi]||'').trim());
+   const vol=Number(String(row[vi]||'').replace(/,/g,'').trim());
    if(yr>=2004&&yr<=2025&&Number.isFinite(vol))harvestByYear[yr]=(harvestByYear[yr]||0)+vol;
   });
+  if(!Object.keys(harvestByYear).length)throw new Error('No annual records found');
   harvestReady=true;
   status.style.display='none';
   updateHarvestChart(current);
  }catch(err){
-  status.textContent='The official harvest dataset could not be loaded in this browser. Please check the Ontario Data Catalogue source link below. ('+err.message+')';
-  status.innerHTML+=' <a href="https://data.ontario.ca/en/dataset/report-on-forest-management-annual-summary-of-ontario-s-forest-management-activities/resource/89b157e4-7fb0-4416-8dab-b5ea73693421" target="_blank" rel="noopener">Open dataset</a>';
+  status.textContent='The harvest data could not be loaded automatically ('+err.message+'). You can still open the official data source: ';
+  const link=document.createElement('a');
+  link.href='https://data.ontario.ca/en/dataset/report-on-forest-management-annual-summary-of-ontario-s-forest-management-activities/resource/89b157e4-7fb0-4416-8dab-b5ea73693421';
+  link.target='_blank';link.rel='noopener';link.textContent='Ontario harvest-volume CSV';
+  status.appendChild(link);
+  document.getElementById('harvestSelectedValue').textContent='Data unavailable';
+  document.getElementById('harvestSelectedLabel').textContent='Official data could not be fetched in this browser';
  }
 })();
 
